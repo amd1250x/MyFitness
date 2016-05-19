@@ -16,6 +16,10 @@ class Migration(migrations.Migration):
             model_name='fitnesslog',
             name='user',
         ),
+        migrations.RemoveField(
+            model_name='fitnesslog',
+            name='id',
+        ),
         migrations.AddField(
             model_name='fitnesslog',
             name='username',
