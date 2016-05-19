@@ -1,11 +1,12 @@
 from django.shortcuts import render
 from django.shortcuts import render_to_response, get_object_or_404
 
-from forms import UserForm, LoginForm
+from forms import UserForm, LoginForm, FitnessLogForm
 from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.models import User
 from django.http import HttpResponseRedirect
 from django.template import RequestContext
+from models import FitnessLog
 
 # Create your views here.
 from django.http import HttpResponse
@@ -50,3 +51,16 @@ def login_user(request):
 def logout_user(request):
     logout(request)
     return HttpResponseRedirect('/')
+
+
+def add_fitness_log(request):
+    if request.method == 'POST':
+        form = FitnessLogForm(request.POST)
+        if form.is_valid():
+            new_exer = FitnessLog.objects.create(**form.cleaned_data)
+            new_exer.save()
+            return HttpResponseRedirect('/')
+    else:
+        form = FitnessLogForm()
+    return render(request, 'MyFitness/add_fitness_log.html', {'form': form})
+

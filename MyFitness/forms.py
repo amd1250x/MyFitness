@@ -1,6 +1,7 @@
 from django.contrib.auth.models import User
 from django.forms import ModelForm
 from django import forms
+from MyFitness.models import FitnessLog
 
 
 class UserForm(ModelForm):
@@ -21,3 +22,24 @@ class LoginForm(ModelForm):
         model = User
         fields = ('username', 'password')
 
+
+class FitnessLogForm(ModelForm):
+
+    activity_types = ((1, 'Weighted Lifting'), (2, 'Body weight Lifting'), (3, 'Cardiovascular'))
+    unit_types = ((1, 'Pounds'), (2, 'Kilograms'))
+
+    ename = forms.CharField(label='Name', max_length=200)
+    date = forms.DateField(label='Date')
+    activity = forms.ChoiceField(label='Exercise', choices=activity_types)
+    reps = forms.IntegerField(label='Repetitions/Time')
+    weight = forms.IntegerField(label='Weight')
+    units = forms.ChoiceField(label='Units', choices=unit_types)
+
+    class Meta:
+        model = FitnessLog
+        fields = ('ename',
+                  'date',
+                  'activity',
+                  'reps',
+                  'weight',
+                  'units')
