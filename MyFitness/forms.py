@@ -26,14 +26,17 @@ class LoginForm(ModelForm):
 class FitnessLogForm(ModelForm):
 
     activity_types = ((1, 'Weighted Lifting'), (2, 'Body weight Lifting'), (3, 'Cardiovascular'))
-    unit_types = ((1, 'Pounds'), (2, 'Kilograms'))
+    w_unit_types = ((1, 'Pounds'), (2, 'Kilograms'))
+    r_unit_types = ((1, 'Seconds'), (2, 'Minutes'), (3, 'Repetitions'))
 
     ename = forms.CharField(label='Name', max_length=200)
     date = forms.DateField(label='Date')
     activity = forms.ChoiceField(label='Exercise', choices=activity_types)
     reps = forms.IntegerField(label='Repetitions/Time')
+    r_units = forms.ChoiceField(label='Units', choices=r_unit_types)
+    sets = forms.IntegerField(label='Sets')
     weight = forms.IntegerField(label='Weight')
-    units = forms.ChoiceField(label='Units', choices=unit_types)
+    w_units = forms.ChoiceField(label='Units', choices=w_unit_types)
 
     class Meta:
         model = FitnessLog
@@ -41,5 +44,7 @@ class FitnessLogForm(ModelForm):
                   'date',
                   'activity',
                   'reps',
+                  'r_units',
+                  'sets',
                   'weight',
-                  'units')
+                  'w_units')

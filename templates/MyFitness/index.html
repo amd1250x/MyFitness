@@ -14,7 +14,11 @@
         <p><a href="{% url 'MyFitness:add_user' %}">Create Account</a></p>
     {% endif %}
     Welcome to MyFitness.
-
+    {% for log in fitness_logs %}
+        {% if log.user == user.username %}
+            <p>{{ log.ename }}</p>
+        {% endif %}
+    {% endfor %}
 
 
 </body>

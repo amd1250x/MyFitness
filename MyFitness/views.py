@@ -13,8 +13,10 @@ from django.http import HttpResponse
 
 
 def index(request):
+    fitness_logs = FitnessLog.objects.all()
     return render_to_response('MyFitness/index.html',
-                              {'user': request.user},
+                              {'user': request.user,
+                               'fitness_logs': fitness_logs},
                               context_instance=RequestContext(request))
 
 
