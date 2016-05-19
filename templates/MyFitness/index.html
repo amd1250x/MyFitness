@@ -6,19 +6,20 @@
 </head>
 <body>
     {% if user.is_authenticated %}
-        <p>Welcome {{ user.username }}</p>
+        <p>Welcome to MyFitness, {{ user.username }}</p>
         <p><a href="{% url 'MyFitness:logout_user' %}">Logout</a></p>
+        {% for log in fitness_logs %}
+            {% if log.user == user.username %}
+                <p>{{ log.ename }}</p>
+            {% endif %}
+        {% endfor %}
     {% else %}
-        <p>Welcome, guest</p>
+        <p>Welcome to MyFitness</p>
         <p><a href="{% url 'MyFitness:login_user' %}">Login</a></p>
         <p><a href="{% url 'MyFitness:add_user' %}">Create Account</a></p>
     {% endif %}
-    Welcome to MyFitness.
-    {% for log in fitness_logs %}
-        {% if log.user == user.username %}
-            <p>{{ log.ename }}</p>
-        {% endif %}
-    {% endfor %}
+
+
 
 
 </body>
