@@ -18,12 +18,6 @@ class Migration(migrations.Migration):
         ),
         migrations.AddField(
             model_name='fitnesslog',
-            name='id',
-            field=models.AutoField(auto_created=True, default=1, primary_key=True, serialize=False, verbose_name='ID'),
-            preserve_default=False,
-        ),
-        migrations.AddField(
-            model_name='fitnesslog',
             name='username',
             field=models.CharField(default=1, max_length=200, verbose_name='Username'),
             preserve_default=False,
