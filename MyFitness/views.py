@@ -57,7 +57,7 @@ def add_fitness_log(request):
     if request.method == 'POST':
         form = FitnessLogForm(request.POST)
         if form.is_valid():
-            new_exer = FitnessLog.objects.create(**form.cleaned_data)
+            new_exer = FitnessLog.objects.create()
             new_exer.save()
             return HttpResponseRedirect('/')
     else:
