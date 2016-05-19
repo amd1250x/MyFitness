@@ -10,7 +10,7 @@ unit_types = ((1, 'Pounds'), (2, 'Kilograms'))
 
 
 class FitnessLog(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
+    username = models.CharField('Username', max_length=200)
     ename = models.CharField('Name', max_length=200)
     date = models.DateField('Date')
     activity = models.IntegerField('Exercise', choices=activity_types)

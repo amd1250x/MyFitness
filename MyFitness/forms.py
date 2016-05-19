@@ -27,6 +27,7 @@ class FitnessLogForm(ModelForm):
 
     activity_types = ((1, 'Weighted Lifting'), (2, 'Body weight Lifting'), (3, 'Cardiovascular'))
     unit_types = ((1, 'Pounds'), (2, 'Kilograms'))
+    username = forms.CharField(label='Username', max_length=200)
     ename = forms.CharField(label='Name', max_length=200)
     date = forms.DateField(label='Date')
     activity = forms.ChoiceField(label='Exercise', choices=activity_types)
@@ -36,7 +37,8 @@ class FitnessLogForm(ModelForm):
 
     class Meta:
         model = FitnessLog
-        fields = ('ename',
+        fields = ('username',
+                  'ename',
                   'date',
                   'activity',
                   'reps',
