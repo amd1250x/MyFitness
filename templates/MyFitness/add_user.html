@@ -1,9 +1,9 @@
 <form method="post" action="">
     {% csrf_token %}
     <ul class="form">
-        <li id="username" class="username">U: {{ form.username }}</li>
-        <li id="email" class="email">E: {{ form.email }}</li>
-        <li id="password" class="password">P: {{ form.password }}</li>
+        <li id="username" class="username"><p>Username: {{ form.username }}</p></li>
+        <li id="email" class="email"><p>Email: {{ form.email }}</p></li>
+        <li id="password" class="password"><p>Password: {{ form.password }}</p></li>
     </ul>
     <input type="submit" value="Create new user account" />
 </form>

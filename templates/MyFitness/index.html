@@ -2,11 +2,17 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Test Test Test</title>
+    <title>Home - MyFitness</title>
 </head>
 <body>
-
-    {{ username }}
+    {% if user.is_authenticated %}
+        <p>Welcome {{ user.username }}</p>
+        <p><a href="{% url 'MyFitness:logout_user' %}">Logout</a></p>
+    {% else %}
+        <p>Welcome, guest</p>
+        <p><a href="{% url 'MyFitness:login_user' %}">Login</a></p>
+        <p><a href="{% url 'MyFitness:add_user' %}">Create Account</a></p>
+    {% endif %}
     Welcome to MyFitness.
 
 </body>

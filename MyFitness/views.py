@@ -13,7 +13,7 @@ from django.http import HttpResponse
 
 def index(request):
     return render_to_response('MyFitness/index.html',
-                              {'username': request.user.username},
+                              {'user': request.user},
                               context_instance=RequestContext(request))
 
 
