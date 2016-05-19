@@ -15,7 +15,7 @@ class FitnessLog(models.Model):
     date = models.DateField('Date')
     activity = models.IntegerField('Exercise', choices=activity_types)
     reps = models.IntegerField('Repetitions/Time')
-    weight = models.IntegerField('Weight')
+    weight = models.IntegerField('Weight', default=0)
     units = models.IntegerField('Units', choices=unit_types)
 
     def __str__(self):
