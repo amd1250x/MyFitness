@@ -8,11 +8,43 @@
     {% if user.is_authenticated %}
         <p>Welcome to MyFitness, {{ user.username }}</p>
         <p><a href="{% url 'MyFitness:logout_user' %}">Logout</a></p>
-        {% for log in fitness_logs %}
-            {% if log.user == user.username %}
-                <p>{{ log.ename }}</p>
-            {% endif %}
-        {% endfor %}
+        <p>{{ yesterday }}</p>
+        {% if yes_has_items == False %}
+                    <p>You had no entries yesterday :(</p>
+        {% else %}
+            {% for log in fitness_logs %}
+                {% if log.user == user.username %}
+                    {% if log.date == yesterday %}
+                        {{ log.date }} - {{ log.ename }}
+                    {% endif %}
+                {% endif %}
+            {% endfor %}
+        {% endif %}
+        <p>{{ today }}</p>
+        {% if tod_has_items == False %}
+            <p>You have no entries today, <a href="{% url 'MyFitness:add_fitness_log' %}">make one.</a></p>
+        {% else %}
+            {% for log in fitness_logs %}
+                {% if log.user == user.username %}
+                    {% if log.date.day == today.day %}
+                        {{ log.ename }}
+                    {% endif %}
+                {% endif %}
+            {% endfor %}
+        {% endif %}
+        <p>{{ tomorrow }}</p>
+        {% if tom_has_items == False %}
+            <p>You have no entries tomorrow, <a href="{% url 'MyFitness:add_fitness_log' %}">make one.</a></p>
+        {% else %}
+            {% for log in fitness_logs %}
+                {% if log.user == user.username %}
+                    {% if log.date.day == tomorrow.day %}
+                        {{ log.ename }}
+                    {% endif %}
+                {% endif %}
+            {% endfor %}
+        {% endif %}
+        <p><a href="{% url 'MyFitness:add_fitness_log' %}">Create Entry</a></p>
     {% else %}
         <p>Welcome to MyFitness</p>
         <p><a href="{% url 'MyFitness:login_user' %}">Login</a></p>

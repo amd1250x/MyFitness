@@ -7,6 +7,7 @@ from django.contrib.auth.models import User
 from django.http import HttpResponseRedirect
 from django.template import RequestContext
 from models import FitnessLog
+import datetime
 
 # Create your views here.
 from django.http import HttpResponse
@@ -14,9 +15,32 @@ from django.http import HttpResponse
 
 def index(request):
     fitness_logs = FitnessLog.objects.all()
+    today = datetime.datetime.today()
+    yesterday = today - datetime.timedelta(1)
+    tomorrow = today + datetime.timedelta(1)
+    tod_has_items = False
+    yes_has_items = False
+    tom_has_items = False
+    no_items = False
+    for item in fitness_logs:
+        if item.date.day == today.day:
+            tod_has_items = True
+        elif item.date.day == yesterday.day:
+            yes_has_items = True
+        elif item.date.day == tomorrow.day:
+            tom_has_items = True
+        else:
+            no_items = True
+
     return render_to_response('MyFitness/index.html',
                               {'user': request.user,
-                               'fitness_logs': fitness_logs},
+                               'fitness_logs': fitness_logs,
+                               'tod_has_items': tod_has_items,
+                               'yes_has_items': yes_has_items,
+                               'tom_has_items': tom_has_items,
+                               'today': today,
+                               'yesterday': yesterday,
+                               'tomorrow': tomorrow},
                               context_instance=RequestContext(request))
 
 
