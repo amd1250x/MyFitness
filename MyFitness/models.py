@@ -9,6 +9,7 @@ activity_types = ((1, 'Weighted Lifting'), (2, 'Body weight Lifting'), (3, 'Card
 w_unit_types = ((1, 'Pounds'), (2, 'Kilograms'))
 r_unit_types = ((1, 'Seconds'), (2, 'Minutes'), (3, 'Repetitions'))
 
+
 class FitnessLog(models.Model):
     id = models.AutoField('ID', primary_key=True)
     user = models.CharField('Username', max_length=100)
