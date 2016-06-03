@@ -27,7 +27,7 @@
             {% for log in fitness_logs %}
                 {% if log.user == user.username %}
                     {% if log.date.day == today.day %}
-                        {{ log.ename }}
+                        {{ log.ename }} - {{ log.weight }} {{ log.w_units }} - {{ log.reps }} {{ log.r_units }}, {{ log.sets }} sets.
                     {% endif %}
                 {% endif %}
             {% endfor %}
