@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.shortcuts import render_to_response, get_object_or_404
-
-from forms import UserForm, LoginForm, FitnessLogForm
+from django.views.decorators.csrf import csrf_protect
+from forms import UserForm, LoginForm, FitnessLogForm, DeleteLogForm
 from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.models import User
 from django.http import HttpResponseRedirect
@@ -90,4 +90,10 @@ def add_fitness_log(request):
     else:
         form = FitnessLogForm()
     return render(request, 'MyFitness/add_fitness_log.html', {'form': form})
+
+
+@csrf_protect
+def delete_fitness_log(request, eid):
+    entry = get_object_or_404(FitnessLog, id=eid).delete()
+    return HttpResponseRedirect('/')
 

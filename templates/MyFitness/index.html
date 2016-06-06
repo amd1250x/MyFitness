@@ -21,6 +21,7 @@
                             <p><b id="name">{{ log.ename }}</b> -
                                {{ log.weight }} {{ log.get_weight_unit }} -
                                {{ log.reps }} {{ log.get_reps_unit }}, {{ log.sets }} sets
+                                <a href="/delete-fitness/{{ log.id }}">Remove</a>
                             </p>
                         {% endif %}
                     {% endif %}

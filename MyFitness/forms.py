@@ -50,3 +50,9 @@ class FitnessLogForm(ModelForm):
                   'sets',
                   'weight',
                   'w_units')
+
+
+class DeleteLogForm(forms.ModelForm):
+    class Meta:
+        model = FitnessLog
+        fields = []
