@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from django.shortcuts import render_to_response, get_object_or_404
 from django.views.decorators.csrf import csrf_protect
+from django.views.generic import DeleteView
 from forms import UserForm, LoginForm, FitnessLogForm, DeleteLogForm
 from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.models import User
@@ -8,14 +9,19 @@ from django.http import HttpResponseRedirect
 from django.template import RequestContext
 from models import FitnessLog
 import datetime
+import uuid
+
 
 # Create your views here.
 from django.http import HttpResponse
+
+token = uuid.uuid4()
 
 
 def index(request):
     fitness_logs = FitnessLog.objects.all()
     today = datetime.datetime.today()
+
 
     class Day:
         def __init__(self, date):
@@ -39,7 +45,8 @@ def index(request):
     return render_to_response('MyFitness/index.html',
                               {'user': request.user,
                                'fitness_logs': fitness_logs,
-                               'days_pm2': days_pm2},
+                               'days_pm2': days_pm2,
+                               'token': token},
                               context_instance=RequestContext(request))
 
 
@@ -90,10 +97,3 @@ def add_fitness_log(request):
     else:
         form = FitnessLogForm()
     return render(request, 'MyFitness/add_fitness_log.html', {'form': form})
-
-
-@csrf_protect
-def delete_fitness_log(request, eid):
-    entry = get_object_or_404(FitnessLog, id=eid).delete()
-    return HttpResponseRedirect('/')
-
