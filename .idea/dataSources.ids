@@ -120,4 +120,7 @@
       <column name="seq" sqlType="" precision="0" scale="-1" nullable="true" jdbcType="12"/>
     </table>
   </data-source>
+  <data-source name="Sqlite (Xerial) - identifier.sqlite" uuid="abca6f8f-deb8-4ac1-a807-dcd36947e456">
+    <database-info product="" version="" jdbc-version="" driver-name="" driver-version=""/>
+  </data-source>
 </component>

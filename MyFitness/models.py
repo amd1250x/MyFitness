@@ -7,7 +7,9 @@ import datetime
 # Create your models here.
 activity_types = ((1, 'Weighted Lifting'), (2, 'Body weight Lifting'), (3, 'Cardiovascular'))
 w_unit_types = ((1, 'Pounds'), (2, 'Kilograms'))
+w_contract = ['lbs.', 'kg']
 r_unit_types = ((1, 'Seconds'), (2, 'Minutes'), (3, 'Repetitions'))
+r_contract = ['sec.', 'min.', 'reps']
 
 
 class FitnessLog(models.Model):
@@ -25,4 +27,9 @@ class FitnessLog(models.Model):
     def __str__(self):
         return self.ename
 
+    def get_weight_unit(self):
+        return w_contract[self.w_units-1]
+
+    def get_reps_unit(self):
+        return r_contract[self.r_units-1]
 

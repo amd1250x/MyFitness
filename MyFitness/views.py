@@ -16,31 +16,27 @@ from django.http import HttpResponse
 def index(request):
     fitness_logs = FitnessLog.objects.all()
     today = datetime.datetime.today()
-    yesterday = today - datetime.timedelta(1)
-    tomorrow = today + datetime.timedelta(1)
-    tod_has_items = False
-    yes_has_items = False
-    tom_has_items = False
-    no_items = False
+
+    class Day:
+        def __init__(self, date):
+            self.date = date
+            self.has_items = False
+
+    days_pm2 = [Day(today - datetime.timedelta(2)),
+                Day(today - datetime.timedelta(1)),
+                Day(today),
+                Day(today + datetime.timedelta(1)),
+                Day(today + datetime.timedelta(2))]
+
     for item in fitness_logs:
-        if item.date.day == today.day:
-            tod_has_items = True
-        elif item.date.day == yesterday.day:
-            yes_has_items = True
-        elif item.date.day == tomorrow.day:
-            tom_has_items = True
-        else:
-            no_items = True
+        for i in range(len(days_pm2)):
+            if item.date.day == days_pm2[i].date.day:
+                days_pm2[i].has_items = True
 
     return render_to_response('MyFitness/index.html',
                               {'user': request.user,
                                'fitness_logs': fitness_logs,
-                               'tod_has_items': tod_has_items,
-                               'yes_has_items': yes_has_items,
-                               'tom_has_items': tom_has_items,
-                               'today': today,
-                               'yesterday': yesterday,
-                               'tomorrow': tomorrow},
+                               'days_pm2': days_pm2},
                               context_instance=RequestContext(request))
 
 

@@ -29,9 +29,10 @@ class FitnessLogForm(ModelForm):
     activity_types = ((1, 'Weighted Lifting'), (2, 'Body weight Lifting'), (3, 'Cardiovascular'))
     w_unit_types = ((1, 'Pounds'), (2, 'Kilograms'))
     r_unit_types = ((1, 'Seconds'), (2, 'Minutes'), (3, 'Repetitions'))
+    today = datetime.datetime.today()
 
     ename = forms.CharField(label='Name', max_length=200)
-    date = forms.DateField(label='Date (Default: Today)', initial=datetime.datetime.today())
+    date = forms.DateField(label='Date', initial=datetime.datetime.today())
     activity = forms.ChoiceField(label='Exercise', choices=activity_types)
     reps = forms.IntegerField(label='Repetitions/Time')
     r_units = forms.ChoiceField(label='Units', choices=r_unit_types)
