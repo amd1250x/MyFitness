@@ -23,11 +23,13 @@ def index(request):
             self.display = self.date.strftime("%A - %B %d, %Y")
             self.has_items = False
 
-    days_pm2 = [Day(today - datetime.timedelta(2)),
+    days_pm2 = [Day(today - datetime.timedelta(3)),
+                Day(today - datetime.timedelta(2)),
                 Day(today - datetime.timedelta(1)),
                 Day(today),
                 Day(today + datetime.timedelta(1)),
-                Day(today + datetime.timedelta(2))]
+                Day(today + datetime.timedelta(2)),
+                Day(today + datetime.timedelta(3))]
 
     for item in fitness_logs:
         for i in range(len(days_pm2)):
