@@ -1,4 +1,6 @@
 <!DOCTYPE html>
+{% load staticfiles %}
+<link rel="stylesheet" type="text/css" href="{% static 'main.css' %}" />
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -9,14 +11,14 @@
         <p>Welcome to MyFitness, {{ user.username }}</p>
         <p><a href="{% url 'MyFitness:logout_user' %}">Logout</a></p>
         {% for d in days_pm2 %}
-            <p>{{ d.date }}</p>
+            <p>{{ d.display }}</p>
             {% if d.has_items == False %}
                 <p>You had no entries this day :(</p>
             {% else %}
                 {% for log in fitness_logs %}
                     {% if log.user == user.username %}
                         {% if log.date.day == d.date.day %}
-                            <p>{{ log.ename }} -
+                            <p><b id="name">{{ log.ename }}</b> -
                                {{ log.weight }} {{ log.get_weight_unit }} -
                                {{ log.reps }} {{ log.get_reps_unit }}, {{ log.sets }} sets
                             </p>
@@ -25,6 +27,7 @@
                 {% endfor %}
             {% endif %}
         {% endfor %}
+        <p><a href="{% url 'MyFitness:add_fitness_log' %}">Create Entry</a></p>
     {% else %}
         <p>Welcome to MyFitness</p>
         <p><a href="{% url 'MyFitness:login_user' %}">Login</a></p>
