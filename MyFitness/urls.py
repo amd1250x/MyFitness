@@ -10,4 +10,6 @@ urlpatterns = [
     url(r'^login-user', views.login_user, name='login_user'),
     url(r'^logout-user', views.logout_user, name='logout_user'),
     url(r'^add-fitness', views.add_fitness_log, name='add_fitness_log'),
+    url(r'^del-fitness/(?P<eid>\d+)/$', views.del_fitness_log, name='del_fitness_log'),
+
 ]

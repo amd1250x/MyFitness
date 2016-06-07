@@ -1,0 +1,6 @@
+<form method="post" action="">
+    {% csrf_token %}
+    {{ form }}
+    <p>Are you sure you want to delete this entry?</p>
+    <input type="submit" value="Yes" />
+</form>

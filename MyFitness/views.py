@@ -2,7 +2,7 @@ from django.shortcuts import render
 from django.shortcuts import render_to_response, get_object_or_404
 from django.views.decorators.csrf import csrf_protect
 from django.views.generic import DeleteView
-from forms import UserForm, LoginForm, FitnessLogForm, DeleteLogForm
+from forms import UserForm, LoginForm, FitnessLogForm, DelLogForm
 from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.models import User
 from django.http import HttpResponseRedirect
@@ -21,7 +21,6 @@ token = uuid.uuid4()
 def index(request):
     fitness_logs = FitnessLog.objects.all()
     today = datetime.datetime.today()
-
 
     class Day:
         def __init__(self, date):
@@ -97,3 +96,14 @@ def add_fitness_log(request):
     else:
         form = FitnessLogForm()
     return render(request, 'MyFitness/add_fitness_log.html', {'form': form})
+
+
+def del_fitness_log(request, eid):
+    if request.method == 'POST':
+        form = DelLogForm(request.POST)
+        if form.is_valid():
+            entry = get_object_or_404(FitnessLog, pk=eid).delete()
+            return HttpResponseRedirect('/')
+    else:
+        form = DelLogForm()
+    return render(request, 'MyFitness/del_fitness_log.html', {'form': form})
