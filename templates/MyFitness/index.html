@@ -9,26 +9,32 @@
 <body>
     {% if user.is_authenticated %}
         <p>Welcome to MyFitness, {{ user.username }}</p>
-        <p><a href="{% url 'MyFitness:logout_user' %}">Logout</a></p>
-        {% for d in days_pm2 %}
-            <p>{{ d.display }}</p>
-            {% if d.has_items == False %}
-                <p>You had no entries this day :(</p>
-            {% else %}
-                {% for log in fitness_logs %}
-                    {% if log.user == user.username %}
-                        {% if log.date.day == d.date.day %}
-                            <p><b id="name">{{ log.ename }}</b> -
-                               {{ log.weight }} {{ log.get_weight_unit }} -
-                               {{ log.reps }} {{ log.get_reps_unit }}, {{ log.sets }} sets
-                                <a href="/del-fitness/{{ log.id }}">Delete</a>
-                            </p>
-                        {% endif %}
+        <ul>
+            <li><a href="{% url 'MyFitness:logout_user' %}">Logout</a></li>
+            <li><a href="{% url 'MyFitness:add_fitness_log' %}">Create Entry</a></li>
+        </ul>
+        <table>
+                {% for d in days_pm2 %}
+                    <tr>
+                        <th><p>{{ d.display }}</p></th>
+                    {% if d.has_items == False %}
+                        <td><p>You had no entries this day :(</p></td>
+                    {% else %}
+                        {% for log in fitness_logs %}
+                            {% if log.user == user.username %}
+                                {% if log.date.day == d.date.day %}
+                                    <td><p><b id="name">{{ log.ename }}</b> -
+                                       {{ log.weight }} {{ log.get_weight_unit }} -
+                                       {{ log.reps }} {{ log.get_reps_unit }}, {{ log.sets }} sets
+                                        <a href="/del-fitness/{{ log.id }}">Delete</a>
+                                    </p></td>
+                                {% endif %}
+                            {% endif %}
+                        {% endfor %}
                     {% endif %}
+                        </tr>
                 {% endfor %}
-            {% endif %}
-        {% endfor %}
-        <p><a href="{% url 'MyFitness:add_fitness_log' %}">Create Entry</a></p>
+        </table>
     {% else %}
         <p>Welcome to MyFitness</p>
         <p><a href="{% url 'MyFitness:login_user' %}">Login</a></p>
