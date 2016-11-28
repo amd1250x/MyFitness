@@ -1,5 +1,15 @@
 <form method="post" action="">
     {% csrf_token %}
     {{ form }}
+    <ul class="form">
+        <li id="ename" class="username"><p>Username: {{ form.ename }}</p></li>
+        <li id="date" class="email"><p>Email: {{ form.date }}</p></li>
+        <li id="activity" class="password"><p>Password: {{ form.activity }}</p></li>
+        <li id="reps" class="username"><p>Username: {{ form.reps }}</p></li>
+        <li id="r_units" class="email"><p>Email: {{ form.r_units }}</p></li>
+        <li id="sets" class="password"><p>Password: {{ form.sets }}</p></li>
+        <li id="weight" class="username"><p>Username: {{ form.weight }}</p></li>
+        <li id="w_units" class="email"><p>Email: {{ form.w_units }}</p></li>
+    </ul>
     <input type="submit" value="Create exercise" />
 </form>
