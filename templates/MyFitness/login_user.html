@@ -1,5 +1,13 @@
-<form method="post" action="">
-    {% csrf_token %}
-    {{ form }}
-    <input type="submit" value="Login" />
-</form>
+<!DOCTYPE html>
+{% load staticfiles %}
+<link rel="stylesheet" type="text/css" href="{% static 'login_user.css' %}" />
+<html lang="en">
+    <form method="post" action="">
+        {% csrf_token %}
+        <ul class="form">
+            <li><p>{{ form.username }}</p></li>
+            <li><p>{{ form.password }}</p></li>
+        </ul>
+        <input type="submit" value="Login" />
+    </form>
+</html>

@@ -1,0 +1,21 @@
+.day-info-box {
+    border-style: solid;
+    border-width: 1px;
+    padding-left: 20px;
+    padding-right: 20px;
+    vertical-align: top;
+}
+
+@media (max-width: 1920px) {
+    .day-info-box {
+        display: inline-block;
+        margin: 20px;
+        width: 160px;
+    }
+}
+@media (max-width:1600px) {
+    .day-info-box {
+        display: block;
+        margin-top: 20px;
+    }
+}

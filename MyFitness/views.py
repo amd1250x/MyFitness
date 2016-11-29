@@ -25,7 +25,8 @@ def index(request):
     class Day:
         def __init__(self, date):
             self.date = date
-            self.display = self.date.strftime("%A: %B %d, %Y")
+            self.display = self.date.strftime("%m/%d/%Y")
+            self.w_display = self.date.strftime("%A")
             self.has_items = False
 
     days_pm2 = [Day(today - datetime.timedelta(3)),
