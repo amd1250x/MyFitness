@@ -38,6 +38,16 @@ def index(request):
                 Day(today + datetime.timedelta(2)),
                 Day(today + datetime.timedelta(3))]
 
+    days_bt = [Day(today - datetime.timedelta(3)),
+                Day(today - datetime.timedelta(2)),
+                Day(today - datetime.timedelta(1))]
+
+    days_at = [Day(today + datetime.timedelta(1)),
+                Day(today + datetime.timedelta(2)),
+                Day(today + datetime.timedelta(3))]
+
+    days_t = [Day(today)]
+
     days_pm2[3].is_today = True
 
     for item in fitness_logs:
@@ -49,6 +59,9 @@ def index(request):
                               {'user': request.user,
                                'fitness_logs': fitness_logs,
                                'days_pm2': days_pm2,
+                               'days_bt': days_bt,
+                               'days_at': days_at,
+                               'days_t': days_t ,
                                'token': token},
                               context_instance=RequestContext(request))
 

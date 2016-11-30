@@ -14,13 +14,14 @@
             <li><a href="{% url 'MyFitness:add_fitness_log' %}">Create Entry</a></li>
         </ul>
         <div class="info-box-collection">
+            <div
 {% for d in days_pm2 %}
     {% if d.is_today == False %}
-            <div class="day-info-box">
+            class="day-info-box">
     {% else %}
-            <div class="today-info-box">
+            class="today-info-box">
     {% endif %}
-                    <div><p>{{ d.w_display }} : {{ d.display }}</p></div>
+                <div><p><span class="title-weekday">{{ d.w_display }}</span> / {{ d.display }}</p></div>
     {% if d.has_items == False %}
                         <div><p>No entries</p></div>
     {% else %}
@@ -36,9 +37,8 @@
             {% endif %}
         {% endfor %}
     {% endif %}
-                    </div>
+            </div><div
 {% endfor %}
-            </div>
         </div>
 
 {% else %}

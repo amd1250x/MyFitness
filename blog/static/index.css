@@ -1,7 +1,13 @@
 :root {
-    --dib-pm: 1.725em;
-    --tib-pm: 44.55em;
-    --dib-size: 10em;
+    --dib-pm-xl: 1.225em;
+    --tib-pm-xl: 44.55em;
+    --dib-size-xl: 11em;
+
+    --dib-pm-md: 1.725em;
+}
+
+* {
+    font-family: Trebuchet MS;
 }
 
 body {
@@ -10,48 +16,78 @@ body {
 }
 
 .info-box-collection {
-    margin-left: auto;
-    margin-right: auto;
+    text-align: center;
 }
 
 .day-info-box {
     border-style: solid;
+    border-radius: 6px;
     border-width: 1px;
-    padding-left: var(--dib-pm);
-    padding-right: var(--dib-pm);
+    border-color: grey;
+    background-color: #e6e6e6;
+
+    padding-left: var(--dib-pm-xl);
+    padding-right: var(--dib-pm-xl);
     vertical-align: top;
+}
+
+.day-info-box .title-weekday {
+    color: grey;
+    font-style: italic;
+    font-size: 24px;
+    font-weight: light;
+}
+
+.day-info-box .title-fulldate {
+
 }
 
 .today-info-box {
     border-style: solid;
     border-width: 1px;
-    padding-left: var(--dib-pm);
-    padding-right: var(--dib-pm);
+    padding-left: var(--dib-pm-xl);
+    padding-right: var(--dib-pm-xl);
     vertical-align: top;
 }
 
-@media (max-width: 1920px) {
+@media (max-width: 4160px) {
     .day-info-box {
         display: inline-block;
-        margin-left: var(--dib-pm);
-        margin-right: var(--dib-pm);
-        width: var(--dib-size);
+        /*width: var(--dib-size-xl);*/
+        text-align: left;
+        width: 20%;
+        margin-left: 10px;
+        margin-right: 10px;
+
     }
 
     .today-info-box {
         display: block;
-        margin-left: var(--dib-pm);
-        margin-right: var(--dib-pm);
-        margin-top: var(--dib-pm);
-        margin-bottom: var(--dib-pm);
-        width: var(--tib-pm);
+        text-align: left;
+        margin-left: auto;
+        margin-right: auto;
+        margin-top: var(--dib-pm-xl);
+        margin-bottom: var(--dib-pm-xl);
+        width: 50%;
+
     }
 }
 
-@media (max-width:1200px) {
+@media (max-width: 1000px) {
     .day-info-box {
+        display: inline-block;
+        margin-left: auto;
+        margin-right: auto;
+        width: 100%;
+        margin-bottom: var(--dib-pm-md);
+    }
+
+    .today-info-box {
         display: block;
-        margin-top: 20px;
-        width: 300px;
+        margin-left: auto;
+        margin-right: auto;
+        margin-top: 0px;
+        margin-bottom: var(--dib-pm-md);
+        width: 100%;
     }
 }
