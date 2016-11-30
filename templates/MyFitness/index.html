@@ -31,7 +31,10 @@
                         </p>
                     </div>
         {% if d.has_items == False %}
-                            <div><p>No entries</p></div>
+                    <div class="no-entries"><span class="no-entries-border">No entries</span></div>
+            {% if d.is_today == True %}
+                    <div class="create-entry-container"><a href="{% url 'MyFitness:add_fitness_log' %}"><span class="create-entry">Create Entry</span></a></div>
+            {% endif %}
         {% else %}
             {% for log in fitness_logs %}
                 {% if log.user == user.username %}
@@ -41,6 +44,13 @@
                                    {{ log.reps }} {{ log.get_reps_unit }}, {{ log.sets }} sets
                                     <a href="/del-fitness/{{ log.id }}">Delete</a>
                                 </p>
+                        {% if d.is_today == True %}
+                                <div>
+                                    <a href="{% url 'MyFitness:add_fitness_log' %}">
+                                        <span class="create-entry">Create Entry</span>
+                                    </a>
+                                </div>
+                        {% endif %}
                     {% endif %}
                 {% endif %}
             {% endfor %}
