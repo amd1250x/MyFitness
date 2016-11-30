@@ -11,8 +11,53 @@
 }
 
 body {
+    margin:0;
+    padding:0;
+    width:100%
+    position: relative;
+    background-color: #b3ffb3;
+}
+
+.navbar ul {
+    list-style-type: none;
+    margin: 0 0 20px 0;
+    padding: 0;
+    overflow: hidden;
+    background-color: white;
+}
+
+.navbar li {
+    float: left;
+}
+
+.navbar li a {
+    display: block;
+    color: black;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+}
+
+.navbar .right {
+    float: right;
+}
+
+/* Change the link color to #111 (black) on hover */
+.navbar li a:hover {
+    background-color: #e6e6e6;
+}
+
+.index-body {
     margin: auto;
-    width: 50%
+    width: 75%
+}
+
+hr {
+    position:relative;
+    margin: 20px 0;
+    border: 0;
+    border-top: 1px solid #666;
+    border-bottom: 1px solid #ffffff;
 }
 
 .info-box-collection {
@@ -22,9 +67,10 @@ body {
 .day-info-box {
     border-style: solid;
     border-radius: 6px;
-    border-width: 1px;
-    border-color: grey;
-    background-color: #e6e6e6;
+    border-width: 0.02em;
+    border-color: #d3d3d3;
+    background-color: white;
+    box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2), 0 3px 10px 0 rgba(0, 0, 0, 0.19);
 
     padding-left: var(--dib-pm-xl);
     padding-right: var(--dib-pm-xl);
@@ -33,13 +79,15 @@ body {
 
 .day-info-box .title-weekday {
     color: grey;
-    font-style: italic;
     font-size: 24px;
     font-weight: light;
 }
 
 .day-info-box .title-fulldate {
-
+    font-family: Arial;
+    font-size: 12px;
+    float: right;
+    color: grey;
 }
 
 .today-info-box {
@@ -56,8 +104,8 @@ body {
         /*width: var(--dib-size-xl);*/
         text-align: left;
         width: 20%;
-        margin-left: 10px;
-        margin-right: 10px;
+        margin-left: 15px;
+        margin-right: 15px;
 
     }
 
