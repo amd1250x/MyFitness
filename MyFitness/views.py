@@ -28,6 +28,7 @@ def index(request):
             self.display = self.date.strftime("%m/%d/%Y")
             self.w_display = self.date.strftime("%A")
             self.has_items = False
+            self.is_today = False
 
     days_pm2 = [Day(today - datetime.timedelta(3)),
                 Day(today - datetime.timedelta(2)),
@@ -36,6 +37,8 @@ def index(request):
                 Day(today + datetime.timedelta(1)),
                 Day(today + datetime.timedelta(2)),
                 Day(today + datetime.timedelta(3))]
+
+    days_pm2[3].is_today = True
 
     for item in fitness_logs:
         for i in range(len(days_pm2)):

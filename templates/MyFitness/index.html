@@ -7,40 +7,44 @@
     <title>Home - MyFitness</title>
 </head>
 <body>
-    {% if user.is_authenticated %}
+{% if user.is_authenticated %}
         <p>Welcome to MyFitness, {{ user.username }}</p>
         <ul>
             <li><a href="{% url 'MyFitness:logout_user' %}">Logout</a></li>
             <li><a href="{% url 'MyFitness:add_fitness_log' %}">Create Entry</a></li>
         </ul>
-        <div>
-                {% for d in days_pm2 %}
-                    <div class="day-info-box">
-                        <div><p>{{ d.w_display }} : {{ d.display }}</p></div>
-                        {% if d.has_items == False %}
-                            <div><p>No entries</p></div>
-                        {% else %}
-                            {% for log in fitness_logs %}
-                                {% if log.user == user.username %}
-                                    {% if log.date.day == d.date.day %}
-                                        <p><b>{{ log.ename }}</b> -
-                                           {{ log.weight }} {{ log.get_weight_unit }} -
-                                           {{ log.reps }} {{ log.get_reps_unit }}, {{ log.sets }} sets
-                                            <a href="/del-fitness/{{ log.id }}">Delete</a>
-                                        </p>
-                                    {% endif %}
-                                {% endif %}
-                            {% endfor %}
-                        {% endif %}
-                        </div>
-                {% endfor %}
+        <div class="info-box-collection">
+{% for d in days_pm2 %}
+    {% if d.is_today == False %}
+            <div class="day-info-box">
+    {% else %}
+            <div class="today-info-box">
+    {% endif %}
+                    <div><p>{{ d.w_display }} : {{ d.display }}</p></div>
+    {% if d.has_items == False %}
+                        <div><p>No entries</p></div>
+    {% else %}
+        {% for log in fitness_logs %}
+            {% if log.user == user.username %}
+                {% if log.date.day == d.date.day %}
+                            <p><b>{{ log.ename }}</b> -
+                               {{ log.weight }} {{ log.get_weight_unit }} -
+                               {{ log.reps }} {{ log.get_reps_unit }}, {{ log.sets }} sets
+                                <a href="/del-fitness/{{ log.id }}">Delete</a>
+                            </p>
+                {% endif %}
+            {% endif %}
+        {% endfor %}
+    {% endif %}
+                    </div>
+{% endfor %}
+            </div>
         </div>
 
-
-    {% else %}
+{% else %}
         <p>Welcome to MyFitness</p>
         <p><a href="{% url 'MyFitness:login_user' %}">Login</a></p>
         <p><a href="{% url 'MyFitness:add_user' %}">Create Account</a></p>
-    {% endif %}
+{% endif %}
 </body>
 </html>
