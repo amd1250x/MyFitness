@@ -63,3 +63,12 @@ body {
     border: thin solid #a6a6a6;
 
 }
+.exer-bar {
+    float: left;
+    width: 50%;
+}
+
+.bodyweight-bar {
+    float: right;
+    width: 50%;
+}

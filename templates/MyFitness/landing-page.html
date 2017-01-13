@@ -1,0 +1,11 @@
+<div class="navbar">
+    <ul>
+        <li><a href="{% url 'MyFitness:index' %}">MyFitness</a></li>
+        <li class="right"><a href="{% url 'MyFitness:login_user' %}">Log In</a></li>
+    </ul>
+</div>
+<div>
+    <p>Welcome to MyFitness</p>
+    <p><a href="{% url 'MyFitness:login_user' %}">Login</a></p>
+    <p><a href="{% url 'MyFitness:add_user' %}">Create Account</a></p>
+</div>

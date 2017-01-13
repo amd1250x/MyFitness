@@ -7,6 +7,7 @@
     <body>
 {% if user.is_authenticated %}
         {% include "MyFitness/navbar.html" %}
+<div class="exer-bar">
 {% for d in days_pm2 %}
         <div class="day-element">
             <div>
@@ -15,6 +16,7 @@
             </div>
 {% if d.has_items == False %}
             <div><span>No entries</span></div>
+
 {% if d.is_today == True %}
             <div>
                 <a href="{% url 'MyFitness:add_fitness_log' %}">
@@ -31,7 +33,6 @@
                {{ log.reps }} {{ log.get_reps_unit }}, {{ log.sets }} sets
                <a class="delete-button" id="delete-button" href="/del-fitness/{{ log.id }}/?next=/">Delete</a>
             </p>
-
 {% endif %}
 {% endif %}
 {% endfor %}
@@ -45,7 +46,8 @@
 {% endif %}
         </div>
 {% endfor %}
-        <div>
+    </div>
+        <div class="bodyweight-bar">
             <p>Morning:
                 {% if tmw.weight %}
                 {{ tmw.weight }}
@@ -60,21 +62,14 @@
                 {% else %}
                 --
                 {% endif %}</p>
+            <form method="post" action="">
+                {% csrf_token %}
+                {{ form }}
+                <input type="submit" value="Submit" />
+            </form>
         </div>
-
-
-
-        <form method="post" action="">
-            {% csrf_token %}
-            {{ form }}
-            <input type="submit" value="Submit" />
-        </form>
 {% else %}
-        <div>
-            <p>Welcome to MyFitness</p>
-            <p><a href="{% url 'MyFitness:login_user' %}">Login</a></p>
-            <p><a href="{% url 'MyFitness:add_user' %}">Create Account</a></p>
-        </div>
+    {% include 'Myfitness/landing-page.html' %}
 {% endif %}
     </body>
 </html>

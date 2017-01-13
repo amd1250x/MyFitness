@@ -53,7 +53,7 @@ def index(request):
 
     for item in fitness_logs:
         for i in range(len(days_pm2)):
-            if item.date.day == days_pm2[i].date.day:
+            if item.date.day == days_pm2[i].date.day and item.user == request.user.username:
                 days_pm2[i].has_items = True
 
     today_morning_weight = "--"

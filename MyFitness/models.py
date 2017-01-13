@@ -41,3 +41,6 @@ class BodyWeightLog(models.Model):
     date = models.DateField('Date')
     # time of day
     tod = models.IntegerField('Time of Day', choices=time_of_day)
+
+    def __str__(self):
+        return self.user + '-' + str(self.date) + '-' + str(time_of_day[self.tod-1][1])
