@@ -1,0 +1,7 @@
+{% for log in entries %}
+     <p class="workouts"><b> {{ log.date.month }}/{{ log.date.day}}/{{ log.date.year}}: {{ log.ename }}</b> -
+               {{ log.weight }} {{ log.get_weight_unit }} -
+               {{ log.reps }} {{ log.get_reps_unit }}, {{ log.sets }} sets
+                <a class="delete-button" href="/del-fitness/{{ log.id }}?next={{ request.path|urlencode }}">Delete</a>
+            </p>
+{% endfor %}

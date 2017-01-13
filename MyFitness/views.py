@@ -120,7 +120,18 @@ def del_fitness_log(request, eid):
         form = DelLogForm(request.POST)
         if form.is_valid():
             entry = get_object_or_404(FitnessLog, pk=eid).delete()
-            return HttpResponseRedirect('/')
+            next = request.POST.get('next', '/')
+            return HttpResponseRedirect(next)
     else:
         form = DelLogForm()
     return render(request, 'MyFitness/del_fitness_log.html', {'form': form})
+
+def view_all_entries(request):
+    entries = FitnessLog.objects.all()
+    n_entries = []
+    for e in entries:
+        if e.user == request.user:
+            n_entries.append(e)
+    return render_to_response('MyFitness/view_all_entries.html',
+                              {'entries': entries},
+                              context_instance=RequestContext(request))

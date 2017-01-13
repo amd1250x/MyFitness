@@ -1,13 +1,22 @@
 <!DOCTYPE html>
-{% load staticfiles %}
-<link rel="stylesheet" type="text/css" href="{% static 'login_user.css' %}" />
 <html lang="en">
-    <form method="post" action="">
-        {% csrf_token %}
-        <ul class="form">
-            <li><p>{{ form.username }}</p></li>
-            <li><p>{{ form.password }}</p></li>
-        </ul>
-        <input type="submit" value="Login" />
-    </form>
+    <head>
+        {% include "MyFitness/header.html" %}
+    </head>
+    <body>
+        <div class="navbar">
+            <ul>
+                <li><a href="{% url 'MyFitness:index' %}">MyFitness / Login</a></li>
+            </ul>
+        </div>
+        <form method="post" action="">
+            {% csrf_token %}
+            <ul class="form">
+                <li><p>{{ form.username }}</p></li>
+                <li><p>{{ form.password }}</p></li>
+            </ul>
+            <input type="submit" value="Login" />
+        </form>
+    </body>
+
 </html>

@@ -1,70 +1,55 @@
 <!DOCTYPE html>
-{% load staticfiles %}
-<link rel="stylesheet" type="text/css" href="{% static 'index.css' %}" />
 <html lang="en">
     <head>
-        <meta charset="UTF-8">
+        {% include "MyFitness/header.html" %}
         <title>Home - MyFitness</title>
     </head>
     <body>
-        <div class="navbar">
-    {% if user.is_authenticated %}
-            <ul>
-                <li><a href="{% url 'MyFitness:index' %}">MyFitness / {{ user.username }}</a></li>
-                <li class="right"><a href="{% url 'MyFitness:logout_user' %}">Logout</a></li>
-                <li class="right"><a href="{% url 'MyFitness:add_fitness_log' %}">Create Entry</a></li>
-            </ul>
-        </div>
-        <div class="index-body">
-            <div class="info-box-collection">
-                <div
-    {% for d in days_pm2 %}
-        {% if d.is_today == False %}
-                class="day-info-box">
-        {% else %}
-                class="today-info-box">
-        {% endif %}
-                    <div>
-                        <p>
-                            <span class="title-weekday">{{ d.w_display }}</span>
-                            <span class="title-fulldate">{{ d.display }}</span>
-                        </p>
-                    </div>
-        {% if d.has_items == False %}
-                    <div class="no-entries"><span class="no-entries-border">No entries</span></div>
-            {% if d.is_today == True %}
-                    <div class="create-entry-container"><a href="{% url 'MyFitness:add_fitness_log' %}"><span class="create-entry">Create Entry</span></a></div>
-            {% endif %}
-        {% else %}
-            {% for log in fitness_logs %}
-                {% if log.user == user.username %}
-                    {% if log.date.day == d.date.day %}
-                                <p><b>{{ log.ename }}</b> -
-                                   {{ log.weight }} {{ log.get_weight_unit }} -
-                                   {{ log.reps }} {{ log.get_reps_unit }}, {{ log.sets }} sets
-                                    <a href="/del-fitness/{{ log.id }}">Delete</a>
-                                </p>
-                        {% if d.is_today == True %}
-                                <div>
-                                    <a href="{% url 'MyFitness:add_fitness_log' %}">
-                                        <span class="create-entry">Create Entry</span>
-                                    </a>
-                                </div>
-                        {% endif %}
-                    {% endif %}
-                {% endif %}
-            {% endfor %}
-        {% endif %}
-                </div><div
-    {% endfor %}
+{% if user.is_authenticated %}
+        {% include "MyFitness/navbar.html" %}
+{% for d in days_pm2 %}
+        <div class="day-element">
+            <div>
+                <span>{{ d.w_display }}</span>
+                <span>{{ d.display }}</span>
             </div>
+{% if d.has_items == False %}
+            <div><span>No entries</span></div>
+{% if d.is_today == True %}
+            <div>
+                <a href="{% url 'MyFitness:add_fitness_log' %}">
+                    <span>Create Entry</span>
+                </a>
+            </div>
+{% endif %}
+{% else %}
+{% for log in fitness_logs %}
+{% if log.user == user.username %}
+{% if log.date.day == d.date.day %}
+            <p class="workouts"><b>{{ log.ename }}</b> -
+               {{ log.weight }} {{ log.get_weight_unit }} -
+               {{ log.reps }} {{ log.get_reps_unit }}, {{ log.sets }} sets
+                <a class="delete-button" href="/del-fitness/{{ log.id }}/?next=/">Delete</a>
+            </p>
+{% if d.is_today == True %}
+            <div>
+                <a href="{% url 'MyFitness:add_fitness_log' %}">
+                    <span class="create-entry">Create Entry</span>
+                </a>
+            </div>
+{% endif %}
+{% endif %}
+{% endif %}
+{% endfor %}
+{% endif %}
         </div>
-    {% else %}
-        <div class="index-welcome">
+{% endfor %}
+{% else %}
+        <div>
             <p>Welcome to MyFitness</p>
             <p><a href="{% url 'MyFitness:login_user' %}">Login</a></p>
             <p><a href="{% url 'MyFitness:add_user' %}">Create Account</a></p>
         </div>
-    {% endif %}
+{% endif %}
     </body>
 </html>

@@ -7,7 +7,8 @@
 }
 
 * {
-    font-family: Trebuchet MS;
+    font-family: Arial;
+    font-size: 14px;
 }
 
 body {
@@ -15,12 +16,13 @@ body {
     padding:0;
     width:100%
     position: relative;
-    background-color: #b3ffb3;
 }
-
+.navbar {
+    border-bottom: thin solid #a6a6a6;
+}
 .navbar ul {
     list-style-type: none;
-    margin: 0 0 20px 0;
+    margin: 0;
     padding: 0;
     overflow: hidden;
     background-color: white;
@@ -36,6 +38,13 @@ body {
     text-align: center;
     padding: 14px 16px;
     text-decoration: none;
+
+    -o-transition: background-color 0.3s ease;
+    -moz-transition: background-color 0.3s ease;
+    -khtml-transition: background-color 0.3s ease;
+    -webkit-transition: background-color 0.3s ease;
+    -ms-transition: background-color 0.3s ease;
+    transition: background-color 0.3s ease;
 }
 
 .navbar .right {
@@ -47,162 +56,18 @@ body {
     background-color: #e6e6e6;
 }
 
-.index-body {
-    margin: auto;
-    width: 75%
+.day-element {
+    width: 500px;
+    margin: 10px;
+    padding: 10px;
+    border: thin solid #a6a6a6;
+
 }
 
-hr {
-    position:relative;
-    margin: 20px 0;
-    border: 0;
-    border-top: 1px solid #666;
-    border-bottom: 1px solid #ffffff;
-}
-
-.info-box-collection {
-    text-align: center;
-}
-
-.day-info-box {
-    border-style: solid;
-    border-radius: 6px;
-    border-width: 0.02em;
-    border-color: #d3d3d3;
-    background-color: white;
-    box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2), 0 3px 10px 0 rgba(0, 0, 0, 0.19);
-
-    padding-left: var(--dib-pm-xl);
-    padding-right: var(--dib-pm-xl);
-    vertical-align: top;
-}
-
-.day-info-box .title-weekday {
-    color: grey;
-    font-size: 24px;
-    font-weight: light;
-}
-
-.day-info-box .title-fulldate {
-    font-family: Arial;
-    font-size: 12px;
-    float: right;
-    color: grey;
-}
-
-.today-info-box {
-    border-style: solid;
-    border-width: 1px;
-    padding-left: var(--dib-pm-xl);
-    padding-right: var(--dib-pm-xl);
-    vertical-align: top;
-}
-
-.no-entries {
-    font-style: italic;
-    color: grey;
+.delete-button {
     display: block;
-    text-align: center;
-    overflow: hidden;
-    white-space: nowrap;
-    margin-bottom: 20px;
 }
 
-.no-entries > .no-entries-border {
-    position: relative;
-    display: inline-block;
-}
-
-.no-entries > .no-entries-border:before,
-.no-entries > .no-entries-border:after {
-    content: "";
-    position: absolute;
-    top: 50%;
-    width: 9999px;
-    height: 1px;
-    background: red;
-}
-
-.no-entries > .no-entries-border:before {
-    background-color: grey;
-    right: 100%;
-    margin-right: 7px;
-}
-
-.no-entries > .no-entries-border:after {
-    background-color: grey;
-    left: 100%;
-    margin-left: 7px;
-}
-
-.create-entry-container {
-    text-align: center;
-    margin-bottom: 20px;
-}
-
-.create-entry {
-    background-color: red;
-    margin-bottom: 20px;
-    padding: 6px;
-    color: white;
-    font-size: 12px;
-    font-weight: bold;
-    border-radius: 12px;
-
-    -o-transition: background-color 0.1s ease;
-    -moz-transition: background-color 0.1s ease;
-    -khtml-transition: background-color 0.1s ease;
-    -webkit-transition: background-color 0.1s ease;
-    -ms-transition: background-color 0.1s ease;
-    transition: background-color 0.1s ease;
-}
-
-.create-entry:hover {
-    background-color: #DE1B1B;
-}
-
-.create-entry-container a {
-    text-decoration: none;
-}
-
-@media (max-width: 4160px) {
-    .day-info-box {
-        display: inline-block;
-        /*width: var(--dib-size-xl);*/
-        text-align: left;
-        width: 20%;
-        margin-left: 15px;
-        margin-right: 15px;
-
-    }
-
-    .today-info-box {
-        display: block;
-        text-align: left;
-        margin-left: auto;
-        margin-right: auto;
-        margin-top: var(--dib-pm-xl);
-        margin-bottom: var(--dib-pm-xl);
-        width: 50%;
-
-    }
-}
-
-@media (max-width: 1000px) {
-    .day-info-box {
-        display: inline-block;
-        margin-left: auto;
-        margin-right: auto;
-        width: 100%;
-        margin-bottom: var(--dib-pm-md);
-    }
-
-    .today-info-box {
-        display: block;
-        margin-left: auto;
-        margin-right: auto;
-        margin-top: 0px;
-        margin-bottom: var(--dib-pm-md);
-        width: 100%;
-    }
+.day-element .workouts:hover + .day-element .workouts .delete-button {
+    display: block;
 }
