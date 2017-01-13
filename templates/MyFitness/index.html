@@ -46,17 +46,8 @@
         </div>
 {% endfor %}
         <div>
-            {% for w in weight_logs %}
-                {% if w.user == user.username %}
-                    {% if w.date == today.date %}
-                        {% if w.tod == 1 %}
-                            <p>Morning: {{ w.weight }}<a class="delete-button" href="/del-weight/{{ w.id }}/?next=/">Delete</a></p>
-                        {% else %}
-                            <p>Afternoon: {{ w.weight }}<a class="delete-button" href="/del-weight/{{ w.id }}/?next=/">Delete</a></p>
-                        {% endif %}
-                    {% endif %}
-                {% endif %}
-            {% endfor %}
+            <p>Morning: {{ tmw }}<a class="delete-button" href="/del-weight/{{ w.id }}/?next=/">Delete</a></p>
+            <p>Afternoon: {{ taw }}<a class="delete-button" href="/del-weight/{{ w.id }}/?next=/">Delete</a></p>
         </div>
 
 

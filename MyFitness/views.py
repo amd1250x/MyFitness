@@ -56,6 +56,18 @@ def index(request):
             if item.date.day == days_pm2[i].date.day:
                 days_pm2[i].has_items = True
 
+    today_morning_weight = "--"
+    today_afternoon_weight = "--"
+    for w in weight_logs:
+        if w.user == request.user.username:
+            if w.date == today.date():
+                if w.tod == 1:
+                    today_morning_weight = w.weight
+                elif w.tod == 2:
+                    today_afternoon_weight = w.weight
+
+
+
 
 
     if request.method == 'POST':
@@ -81,7 +93,9 @@ def index(request):
                                'token': token,
                                'form': form,
                                'today': today,
-                               'weight_logs': weight_logs},
+                               'weight_logs': weight_logs,
+                               'tmw': today_morning_weight,
+                               'taw': today_afternoon_weight},
                               )
 
 
