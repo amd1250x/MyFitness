@@ -46,8 +46,20 @@
         </div>
 {% endfor %}
         <div>
-            <p>Morning: {{ tmw }}<a class="delete-button" href="/del-weight/{{ w.id }}/?next=/">Delete</a></p>
-            <p>Afternoon: {{ taw }}<a class="delete-button" href="/del-weight/{{ w.id }}/?next=/">Delete</a></p>
+            <p>Morning:
+                {% if tmw.weight %}
+                {{ tmw.weight }}
+                <a class="delete-button" href="/del-weight/{{ tmw.id }}/?next=/">Delete</a>
+                {% else %}
+                --
+                {% endif %}</p>
+            <p>Afternoon:
+                {% if taw.weight %}
+                {{ taw.weight }}
+                <a class="delete-button" href="/del-weight/{{ taw.id }}/?next=/">Delete</a>
+                {% else %}
+                --
+                {% endif %}</p>
         </div>
 
 

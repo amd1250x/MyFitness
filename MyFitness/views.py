@@ -62,9 +62,9 @@ def index(request):
         if w.user == request.user.username:
             if w.date == today.date():
                 if w.tod == 1:
-                    today_morning_weight = w.weight
+                    today_morning_weight = w
                 elif w.tod == 2:
-                    today_afternoon_weight = w.weight
+                    today_afternoon_weight = w
 
 
 
