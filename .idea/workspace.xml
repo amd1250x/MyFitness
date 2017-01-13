@@ -1,21 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="2e11faa4-6ac0-497b-88f4-795f164374a5" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/templates/MyFitness/navbar.html" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/templates/MyFitness/view_all_entries.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/MyFitness/urls.py" afterPath="$PROJECT_DIR$/MyFitness/urls.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/MyFitness/views.py" afterPath="$PROJECT_DIR$/MyFitness/views.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/blog/static/index.css" afterPath="$PROJECT_DIR$/blog/static/index.css" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/db.sqlite3" afterPath="$PROJECT_DIR$/db.sqlite3" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/templates/MyFitness/add_fitness_log.html" afterPath="$PROJECT_DIR$/templates/MyFitness/add_fitness_log.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/templates/MyFitness/add_user.html" afterPath="$PROJECT_DIR$/templates/MyFitness/add_user.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/templates/MyFitness/del_fitness_log.html" afterPath="$PROJECT_DIR$/templates/MyFitness/del_fitness_log.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/templates/MyFitness/header.html" afterPath="$PROJECT_DIR$/templates/MyFitness/header.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/templates/MyFitness/index.html" afterPath="$PROJECT_DIR$/templates/MyFitness/index.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/templates/MyFitness/login_user.html" afterPath="$PROJECT_DIR$/templates/MyFitness/login_user.html" />
-    </list>
+    <list default="true" id="2e11faa4-6ac0-497b-88f4-795f164374a5" name="Default" comment="" />
     <ignored path="blog.iws" />
     <ignored path=".idea/workspace.xml" />
     <ignored path=".idea/dataSources.local.xml" />
