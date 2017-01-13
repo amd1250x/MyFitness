@@ -63,11 +63,3 @@ body {
     border: thin solid #a6a6a6;
 
 }
-
-.delete-button {
-    display: block;
-}
-
-.day-element .workouts:hover + .day-element .workouts .delete-button {
-    display: block;
-}

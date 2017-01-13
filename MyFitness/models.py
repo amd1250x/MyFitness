@@ -10,7 +10,7 @@ w_unit_types = ((1, 'Pounds'), (2, 'Kilograms'))
 w_contract = ['lbs.', 'kg']
 r_unit_types = ((1, 'Seconds'), (2, 'Minutes'), (3, 'Repetitions'))
 r_contract = ['sec.', 'min.', 'reps']
-
+time_of_day = ((1, 'Morning'), (2, 'Afternoon'))
 
 class FitnessLog(models.Model):
     id = models.AutoField('ID', primary_key=True)
@@ -33,3 +33,11 @@ class FitnessLog(models.Model):
     def get_reps_unit(self):
         return r_contract[self.r_units-1]
 
+class BodyWeightLog(models.Model):
+    id = models.AutoField('ID', primary_key=True)
+    user = models.CharField('Username', max_length=100)
+    weight = models.FloatField('Weight', default=150)
+    w_units = models.IntegerField('Units', choices=w_unit_types)
+    date = models.DateField('Date')
+    # time of day
+    tod = models.IntegerField('Time of Day', choices=time_of_day)

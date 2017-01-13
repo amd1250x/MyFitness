@@ -2,12 +2,12 @@ from django.shortcuts import render
 from django.shortcuts import render_to_response, get_object_or_404
 from django.views.decorators.csrf import csrf_protect
 from django.views.generic import DeleteView
-from forms import UserForm, LoginForm, FitnessLogForm, DelLogForm
+from forms import UserForm, LoginForm, FitnessLogForm, DelLogForm, BodyWeightLogForm, DelBodyWeightLogForm
 from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.models import User
 from django.http import HttpResponseRedirect
 from django.template import RequestContext
-from models import FitnessLog
+from models import FitnessLog, BodyWeightLog
 import datetime
 import uuid
 
@@ -20,6 +20,7 @@ token = uuid.uuid4()
 
 def index(request):
     fitness_logs = FitnessLog.objects.all()
+    weight_logs = BodyWeightLog.objects.all()
     today = datetime.datetime.today()
 
     class Day:
@@ -55,15 +56,33 @@ def index(request):
             if item.date.day == days_pm2[i].date.day:
                 days_pm2[i].has_items = True
 
-    return render_to_response('MyFitness/index.html',
+
+
+    if request.method == 'POST':
+        form = BodyWeightLogForm(request.POST)
+        if form.is_valid():
+            form_data = form.cleaned_data
+            form_data['user'] = request.user.username
+            new_weight = BodyWeightLog.objects.create(**form_data)
+            new_weight.save()
+            return HttpResponseRedirect('/')
+    else:
+        form = BodyWeightLogForm()
+
+
+
+    return render(request, 'MyFitness/index.html',
                               {'user': request.user,
                                'fitness_logs': fitness_logs,
                                'days_pm2': days_pm2,
                                'days_bt': days_bt,
                                'days_at': days_at,
                                'days_t': days_t ,
-                               'token': token},
-                              context_instance=RequestContext(request))
+                               'token': token,
+                               'form': form,
+                               'today': today,
+                               'weight_logs': weight_logs},
+                              )
 
 
 def add_user(request):
@@ -132,6 +151,16 @@ def view_all_entries(request):
     for e in entries:
         if e.user == request.user:
             n_entries.append(e)
-    return render_to_response('MyFitness/view_all_entries.html',
-                              {'entries': entries},
-                              context_instance=RequestContext(request))
+    return render(request, 'MyFitness/view_all_entries.html',
+                              {'entries': entries},)
+
+def del_weight_log(request, id):
+    if request.method == 'POST':
+        form = DelBodyWeightLogForm(request.POST)
+        if form.is_valid():
+            entry = get_object_or_404(BodyWeightLog, pk=id).delete()
+            next = request.POST.get('next', '/')
+            return HttpResponseRedirect(next)
+    else:
+        form = DelBodyWeightLogForm()
+    return render(request, 'MyFitness/del_weight_log.html', {'form': form})

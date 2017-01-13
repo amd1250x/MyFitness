@@ -2,6 +2,7 @@ from django.contrib.auth.models import User
 from django.forms import ModelForm
 from django import forms
 from MyFitness.models import FitnessLog
+from MyFitness.models import BodyWeightLog
 import datetime
 
 
@@ -59,4 +60,28 @@ class DelLogForm(ModelForm):
 
     class Meta:
         model = FitnessLog
+        fields = ()
+
+class BodyWeightLogForm(ModelForm):
+
+    time_of_day = ((1, 'Morning'), (2, 'Afternoon'))
+    w_unit_types = ((1, 'Pounds'), (2, 'Kilograms'))
+
+    weight = forms.FloatField(label='Weight', initial=150)
+    w_units = forms.ChoiceField(label='Units', choices=w_unit_types)
+    date = forms.DateField(label='Date', initial=datetime.datetime.today())
+    # time of day
+    tod = forms.ChoiceField(label='Time of Day', choices=time_of_day)
+
+    class Meta:
+        model = BodyWeightLog
+        fields = ('weight',
+                  'w_units',
+                  'date',
+                  'tod')
+
+class DelBodyWeightLogForm(ModelForm):
+
+    class Meta:
+        model = BodyWeightLog
         fields = ()
