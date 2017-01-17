@@ -9,10 +9,18 @@
         {% include "MyFitness/navbar.html" %}
 <div class="exer-bar">
 {% for d in days_pm2 %}
-        <div class="day-element">
+    {% if d.w_display in expanded %}
+    <div class="day-element-active">
+    {% else %}
+    <div class="day-element">
+    {% endif %}
             <div>
                 <span>{{ d.w_display }}</span>
+                {% if d.w_display in expanded %}
+                <span>{{ d.display }}  </span><a class="delete-button" href="/del-day/{{ w.id }}/?next=/">x</a>
+                {% else %}
                 <span>{{ d.display }}</span>
+                {% endif %}
             </div>
 {% if d.has_items == False %}
             <div><span>No entries</span></div>
@@ -25,17 +33,30 @@
             </div>
 {% endif %}
 {% else %}
+            <table id="myTable" class="exer-table">
+                <thead>
+                    <tr align="left">
+                        <th>Name</th>
+                        <th>Weight</th>
+                        <th>Repetitions</th>
+                        <th>Sets</th>
+                    </tr>
+                </thead>
 {% for log in fitness_logs %}
-{% if log.user == user.username %}
 {% if log.date.day == d.date.day %}
-            <p class="workouts" id="workouts"><b>{{ log.ename }}</b> -
-               {{ log.weight }} {{ log.get_weight_unit }} -
-               {{ log.reps }} {{ log.get_reps_unit }}, {{ log.sets }} sets
-               <a class="delete-button" id="delete-button" href="/del-fitness/{{ log.id }}/?next=/">Delete</a>
-            </p>
-{% endif %}
+                <tbody>
+                    <tr>
+                        <td>{{ log.ename }}</td>
+                        <td>{{ log.weight }} {{ log.get_weight_unit }}</td>
+                        <td>{{ log.reps}} {{ log.get_reps_unit }}</td>
+                        <td>{{ log.sets }}</td>
+                        <td><a class="delete-button" href="/del-fitness/{{ log.id }}/?next=/">x</a></td>
+                    </tr>
+                </tbody>
 {% endif %}
 {% endfor %}
+
+            </table>
 {% if d.is_today == True %}
             <div>
                 <a href="{% url 'MyFitness:add_fitness_log' %}">
@@ -48,24 +69,37 @@
 {% endfor %}
     </div>
         <div class="bodyweight-bar">
-            <p>Morning:
+            <div class="morning-weight">
                 {% if tmw.weight %}
-                {{ tmw.weight }}
-                <a class="delete-button" href="/del-weight/{{ tmw.id }}/?next=/">Delete</a>
+                <div>{{ tmw.weight }} <span style='font-size:14px;'>{{ tmw.get_weight_unit }}</span>
+                    <a class="delete-button" href="/del-weight/{{ tmw.id }}/?next=/">x</a></div>
                 {% else %}
-                --
-                {% endif %}</p>
-            <p>Afternoon:
+                <div>--</div>
+                {% endif %}
+            </div>
+            <div class="afternoon-weight">
                 {% if taw.weight %}
-                {{ taw.weight }}
-                <a class="delete-button" href="/del-weight/{{ taw.id }}/?next=/">Delete</a>
+                <div>{{ taw.weight }} <span style='font-size:14px;'>{{ taw.get_weight_unit }}</span>
+                    <a class="delete-button" href="/del-weight/{{ taw.id }}/?next=/">x</a></div>
                 {% else %}
-                --
-                {% endif %}</p>
+                <div>--</div>
+                {% endif %}
+            </div>
+        </div>
+        {% if not tmw.weight or not taw.weight %}
+            <div>
+                <form method="post" action="">
+                    {% csrf_token %}
+                    {{ form }}
+                    <input type="submit"  name="action" value="Submit Weight"/>
+                </form>
+            </div>
+        {% endif %}
+        <div>
             <form method="post" action="">
                 {% csrf_token %}
-                {{ form }}
-                <input type="submit" value="Submit" />
+                {{ dform }}
+                <input type="submit" name="action" value="Submit Day"/>
             </form>
         </div>
 {% else %}

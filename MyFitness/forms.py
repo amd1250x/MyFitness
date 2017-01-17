@@ -1,8 +1,7 @@
 from django.contrib.auth.models import User
 from django.forms import ModelForm
 from django import forms
-from MyFitness.models import FitnessLog
-from MyFitness.models import BodyWeightLog
+from MyFitness.models import FitnessLog, BodyWeightLog, WorkoutDay
 import datetime
 
 
@@ -84,4 +83,25 @@ class DelBodyWeightLogForm(ModelForm):
 
     class Meta:
         model = BodyWeightLog
+        fields = ()
+
+class WorkoutDayForm(ModelForm):
+    list_of_days = ((1, 'Monday'),
+                (2, 'Tuesday'),
+                (3, 'Wednesday'),
+                (4, 'Thursday'),
+                (5, 'Friday'),
+                (6, 'Saturday'),
+                (7, 'Sunday'))
+
+    day = forms.ChoiceField(choices=list_of_days)
+
+    class Meta:
+        model = WorkoutDay
+        fields = ('day',)
+
+class DelWorkoutDayForm(ModelForm):
+
+    class Meta:
+        model = WorkoutDay
         fields = ()

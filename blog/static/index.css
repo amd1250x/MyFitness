@@ -61,14 +61,68 @@ body {
     margin: 10px;
     padding: 10px;
     border: thin solid #a6a6a6;
+}
 
+.day-element-active {
+    width: 500px;
+    margin: 10px;
+    padding: 10px;
+    border: thin solid black;
+    background-color: lightgrey;
 }
 .exer-bar {
     float: left;
-    width: 50%;
+    width: 30%;
 }
 
 .bodyweight-bar {
     float: right;
+    width: 70%;
+    margin: 20px 0 0 0;
+}
+
+.exer-table {
+    width: 100%;
+}
+.exer-table tr th {
+    align: left;
+}
+
+.exer-table tr td {
+    padding: 0.5em 0 0.5em 0;
+}
+
+.delete-button {
+    font-weight: bold;
+    text-decoration: none;
+    color: white;
+    background-color: #a6a6a6;
+    padding: 0.15em 0.5em 0.2em 0.5em;
+    border-radius: 1em;
+    vertical-align: middle;
+
+    -o-transition: background-color 0.3s ease;
+    -moz-transition: background-color 0.3s ease;
+    -khtml-transition: background-color 0.3s ease;
+    -webkit-transition: background-color 0.3s ease;
+    -ms-transition: background-color 0.3s ease;
+    transition: background-color 0.3s ease;
+}
+
+.delete-button:hover {
+    background-color: black;
+}
+
+.morning-weight div {
+    text-align: center;
+    font-size: 40px;
+    float: left;
     width: 50%;
 }
+.afternoon-weight div {
+    text-align: center;
+    font-size: 40px;
+    float: right;
+    width: 50%;
+}
+

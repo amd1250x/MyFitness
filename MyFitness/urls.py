@@ -13,5 +13,6 @@ urlpatterns = [
     url(r'^del-fitness/(?P<eid>\d+)/$', views.del_fitness_log, name='del_fitness_log'),
     url(r'^all-fitness', views.view_all_entries, name='view_all_entries'),
     url(r'^del-weight/(?P<id>\d+)/$', views.del_weight_log, name='del_weight_log'),
+    url(r'^del-day/(?P<id>\d+)/$', views.del_day, name='del_day')
 
 ]
