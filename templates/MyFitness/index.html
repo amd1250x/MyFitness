@@ -9,18 +9,15 @@
         {% include "MyFitness/navbar.html" %}
 <div class="exer-bar">
 {% for d in days_pm2 %}
-    {% if d.w_display in expanded %}
+    {% if d.is_active %}
     <div class="day-element-active">
     {% else %}
     <div class="day-element">
     {% endif %}
+
             <div>
                 <span>{{ d.w_display }}</span>
-                {% if d.w_display in expanded %}
-                <span>{{ d.display }}  </span><a class="delete-button" href="/del-day/{{ w.id }}/?next=/">x</a>
-                {% else %}
-                <span>{{ d.display }}</span>
-                {% endif %}
+                <span>{{ d.display }}  </span>
             </div>
 {% if d.has_items == False %}
             <div><span>No entries</span></div>
@@ -33,7 +30,7 @@
             </div>
 {% endif %}
 {% else %}
-            <table id="myTable" class="exer-table">
+            <table class="exer-table">
                 <thead>
                     <tr align="left">
                         <th>Name</th>
@@ -90,17 +87,15 @@
             <div>
                 <form method="post" action="">
                     {% csrf_token %}
-                    {{ form }}
+                    <p>Weight: {{ form.weight }} {{ form.w_units }}</p>
+                    <p>Date: {{ form.date }}</p>
+                    <p>Time of Day: {{ form.tod }}</p>
                     <input type="submit"  name="action" value="Submit Weight"/>
                 </form>
             </div>
         {% endif %}
         <div>
-            <form method="post" action="">
-                {% csrf_token %}
-                {{ dform }}
-                <input type="submit" name="action" value="Submit Day"/>
-            </form>
+
         </div>
 {% else %}
     {% include 'Myfitness/landing-page.html' %}

@@ -2,12 +2,13 @@ from django.shortcuts import render
 from django.shortcuts import render_to_response, get_object_or_404
 from django.views.decorators.csrf import csrf_protect
 from django.views.generic import DeleteView
-from forms import UserForm, LoginForm, FitnessLogForm, DelLogForm, BodyWeightLogForm, DelBodyWeightLogForm, WorkoutDayForm, DelWorkoutDayForm
+from forms import UserForm, LoginForm, FitnessLogForm, DelLogForm, BodyWeightLogForm, DelBodyWeightLogForm
+from django.contrib import messages
 from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.models import User
 from django.http import HttpResponseRedirect
 from django.template import RequestContext
-from models import FitnessLog, BodyWeightLog, WorkoutDay
+from models import FitnessLog, BodyWeightLog
 import datetime
 import uuid
 
@@ -21,18 +22,7 @@ token = uuid.uuid4()
 def index(request):
     fitness_logs = FitnessLog.objects.all()
     weight_logs = BodyWeightLog.objects.all()
-    day_logs = WorkoutDay.objects.all()
     today = datetime.datetime.today()
-
-    sorted_day = []
-    for d in day_logs:
-        if d.user == request.user.username:
-            sorted_day.append(d)
-    sorted_day.sort(key=lambda x: x.day, reverse=False)
-
-    expanded_days = []
-    for d in sorted_day:
-        expanded_days.append(d.get_expanded())
 
     sorted_fit = []
     for f in fitness_logs:
@@ -47,6 +37,7 @@ def index(request):
             self.w_display = self.date.strftime("%A")
             self.has_items = False
             self.is_today = False
+            self.is_active = False
 
     days_pm2 = [Day(today - datetime.timedelta(3)),
                 Day(today - datetime.timedelta(2)),
@@ -84,7 +75,6 @@ def index(request):
                     today_afternoon_weight = w
 
     form = BodyWeightLogForm()
-    dform = WorkoutDayForm()
     if request.method == 'POST':
         if request.POST['action'] == 'Submit Weight':
             form = BodyWeightLogForm(request.POST)
@@ -93,18 +83,9 @@ def index(request):
                 form_data['user'] = request.user.username
                 new_weight = BodyWeightLog.objects.create(**form_data)
                 new_weight.save()
-                return HttpResponseRedirect('/')
-        if request.POST['action'] == 'Submit Day':
-            dform = WorkoutDayForm(request.POST)
-            if dform.is_valid():
-                form_data = dform.cleaned_data
-                form_data['user'] = request.user.username
-                new_day = WorkoutDay.objects.create(**form_data)
-                new_day.save()
-                return HttpResponseRedirect('/')
+            return HttpResponseRedirect('/')
     else:
         form = BodyWeightLogForm()
-        dform = WorkoutDayForm()
 
     return render(request, 'MyFitness/index.html',
                               {'user': request.user,
@@ -115,13 +96,10 @@ def index(request):
                                'days_t': days_t ,
                                'token': token,
                                'form': form,
-                               'dform': dform,
                                'today': today,
                                'weight_logs': weight_logs,
                                'tmw': today_morning_weight,
-                               'taw': today_afternoon_weight,
-                               'day_logs': sorted_day,
-                               'expanded': expanded_days},
+                               'taw': today_afternoon_weight,},
                               )
 
 
@@ -204,14 +182,3 @@ def del_weight_log(request, id):
     else:
         form = DelBodyWeightLogForm()
     return render(request, 'MyFitness/del_weight_log.html', {'form': form})
-
-def del_day(request, id):
-    if request.method == 'POST':
-        form = DelWorkoutDayForm(request.POST)
-        if form.is_valid():
-            entry = get_object_or_404(WorkoutDay, pk=id).delete()
-            next = request.POST.get('next', '/')
-            return HttpResponseRedirect(next)
-    else:
-        form = DelWorkoutDayForm()
-    return render(request, 'MyFitness/del_day.html', {'form': form})

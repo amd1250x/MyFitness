@@ -1,7 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        {% include "MyFitness/header.html" %}
+        <title>All Entries</title>
+    </head>
+    <body>
+        {% include "MyFitness/navbar.html" %}
+        <table class="exer-table">
+                <thead>
+                    <tr align="left">
+                        <th>Date</th>
+                        <th>Name</th>
+                        <th>Weight</th>
+                        <th>Repetitions</th>
+                        <th>Sets</th>
+                    </tr>
+                </thead>
 {% for log in entries %}
-     <p class="workouts"><b> {{ log.date.month }}/{{ log.date.day}}/{{ log.date.year}}: {{ log.ename }}</b> -
-               {{ log.weight }} {{ log.get_weight_unit }} -
-               {{ log.reps }} {{ log.get_reps_unit }}, {{ log.sets }} sets
-                <a class="delete-button" href="/del-fitness/{{ log.id }}?next={{ request.path|urlencode }}">Delete</a>
-            </p>
+                <tbody>
+                    <tr>
+                        <td>{{ log.date }}</td>
+                        <td>{{ log.ename }}</td>
+                        <td>{{ log.weight }} {{ log.get_weight_unit }}</td>
+                        <td>{{ log.reps}} {{ log.get_reps_unit }}</td>
+                        <td>{{ log.sets }}</td>
+                        <td><a class="delete-button" href="/del-fitness/{{ log.id }}/?next=/">x</a></td>
+                    </tr>
+                </tbody>
 {% endfor %}
+
+            </table>
+    </body>
+</html>
+
+
+
+
+
+
+
+
+

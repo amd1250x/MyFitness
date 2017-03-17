@@ -1,7 +1,7 @@
 from django.contrib.auth.models import User
 from django.forms import ModelForm
 from django import forms
-from MyFitness.models import FitnessLog, BodyWeightLog, WorkoutDay
+from MyFitness.models import FitnessLog, BodyWeightLog
 import datetime
 
 
@@ -35,13 +35,14 @@ class FitnessLogForm(ModelForm):
     today = datetime.datetime.today()
 
     ename = forms.CharField(label='Name', max_length=200)
-    date = forms.DateField(label='Date', initial=datetime.datetime.today())
+    date = forms.DateField(label='Date', initial=datetime.datetime.today().strftime("%m/%d/%Y"),
+                           widget=forms.TextInput(attrs={'id': 'datepicker'}))
     activity = forms.ChoiceField(label='Exercise', choices=activity_types)
     reps = forms.IntegerField(label='Repetitions/Time')
-    r_units = forms.ChoiceField(label='Units', choices=r_unit_types)
+    r_units = forms.ChoiceField(label='Units', choices=r_unit_types, widget=forms.RadioSelect())
     sets = forms.IntegerField(label='Sets')
     weight = forms.IntegerField(label='Weight')
-    w_units = forms.ChoiceField(label='Units', choices=w_unit_types)
+    w_units = forms.ChoiceField(label='Units', choices=w_unit_types, widget=forms.RadioSelect())
 
     class Meta:
         model = FitnessLog
@@ -67,10 +68,11 @@ class BodyWeightLogForm(ModelForm):
     w_unit_types = ((1, 'Pounds'), (2, 'Kilograms'))
 
     weight = forms.FloatField(label='Weight', initial=150)
-    w_units = forms.ChoiceField(label='Units', choices=w_unit_types)
-    date = forms.DateField(label='Date', initial=datetime.datetime.today())
+    w_units = forms.ChoiceField(label='Units', choices=w_unit_types, widget=forms.RadioSelect())
+    date = forms.DateField(label='Date', initial=datetime.datetime.today().strftime("%m/%d/%Y"),
+                                         widget=forms.TextInput(attrs={'id': 'datepicker'}))
     # time of day
-    tod = forms.ChoiceField(label='Time of Day', choices=time_of_day)
+    tod = forms.ChoiceField(label='Time of Day', choices=time_of_day, widget=forms.RadioSelect())
 
     class Meta:
         model = BodyWeightLog
@@ -83,25 +85,4 @@ class DelBodyWeightLogForm(ModelForm):
 
     class Meta:
         model = BodyWeightLog
-        fields = ()
-
-class WorkoutDayForm(ModelForm):
-    list_of_days = ((1, 'Monday'),
-                (2, 'Tuesday'),
-                (3, 'Wednesday'),
-                (4, 'Thursday'),
-                (5, 'Friday'),
-                (6, 'Saturday'),
-                (7, 'Sunday'))
-
-    day = forms.ChoiceField(choices=list_of_days)
-
-    class Meta:
-        model = WorkoutDay
-        fields = ('day',)
-
-class DelWorkoutDayForm(ModelForm):
-
-    class Meta:
-        model = WorkoutDay
         fields = ()

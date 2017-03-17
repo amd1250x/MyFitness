@@ -3,5 +3,6 @@
         <li><a href="{% url 'MyFitness:index' %}">MyFitness / {{ request.user }}</a></li>
         <li class="right"><a href="{% url 'MyFitness:logout_user' %}">Logout</a></li>
         <li class="right"><a href="{% url 'MyFitness:add_fitness_log' %}">Create Entry</a></li>
+        <li class="right"><a href="{% url 'MyFitness:view_all_entries' %}">All Entries</a></li>
     </ul>
 </div>

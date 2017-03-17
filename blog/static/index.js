@@ -1,5 +1,3 @@
-$(document).ready(function()
-    {
-        $(".exer-table").tablesorter();
-    }
-);
+$(function() {
+    $( "#datepicker" ).datepicker();
+} );
