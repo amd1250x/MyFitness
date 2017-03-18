@@ -21,7 +21,12 @@
                     <tr>
                         <td>{{ log.date }}</td>
                         <td>{{ log.ename }}</td>
-                        <td>{{ log.weight }} {{ log.get_weight_unit }}</td>
+                        <td>
+                            {% if log.weight == 0 %}
+                                Bodyweight
+                            {% else %}
+                                {{ log.weight }} {{ log.get_weight_unit }}
+                            {% endif %}</td>
                         <td>{{ log.reps}} {{ log.get_reps_unit }}</td>
                         <td>{{ log.sets }}</td>
                         <td><a class="delete-button" href="/del-fitness/{{ log.id }}/?next=/">x</a></td>

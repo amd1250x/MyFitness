@@ -9,12 +9,7 @@
         {% include "MyFitness/navbar.html" %}
 <div class="exer-bar">
 {% for d in days_pm2 %}
-    {% if d.is_active %}
-    <div class="day-element-active">
-    {% else %}
-    <div class="day-element">
-    {% endif %}
-
+    <div class="day-element{% if d.is_active %}-active{% endif %}">
             <div>
                 <span>{{ d.w_display }}</span>
                 <span>{{ d.display }}  </span>
@@ -44,7 +39,12 @@
                 <tbody>
                     <tr>
                         <td>{{ log.ename }}</td>
-                        <td>{{ log.weight }} {{ log.get_weight_unit }}</td>
+                        <td>
+                            {% if log.weight == 0 %}
+                                Bodyweight
+                            {% else %}
+                                {{ log.weight }} {{ log.get_weight_unit }}
+                            {% endif %}</td>
                         <td>{{ log.reps}} {{ log.get_reps_unit }}</td>
                         <td>{{ log.sets }}</td>
                         <td><a class="delete-button" href="/del-fitness/{{ log.id }}/?next=/">x</a></td>
@@ -82,20 +82,17 @@
                 <div>--</div>
                 {% endif %}
             </div>
-        </div>
         {% if not tmw.weight or not taw.weight %}
-            <div>
+            <div class="bw-form">
                 <form method="post" action="">
                     {% csrf_token %}
                     <p>Weight: {{ form.weight }} {{ form.w_units }}</p>
                     <p>Date: {{ form.date }}</p>
-                    <p>Time of Day: {{ form.tod }}</p>
+                    <p>{{ form.tod }}</p>
                     <input type="submit"  name="action" value="Submit Weight"/>
                 </form>
             </div>
         {% endif %}
-        <div>
-
         </div>
 {% else %}
     {% include 'MyFitness/landing_page.html' %}

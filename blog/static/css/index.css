@@ -14,7 +14,7 @@
 body {
     margin:0;
     padding:0;
-    width:100%
+    width:100%;
     position: relative;
 }
 .navbar {
@@ -72,13 +72,13 @@ body {
 }
 .exer-bar {
     float: left;
-    width: 30%;
+    width: 500px;
 }
 
 .bodyweight-bar {
-    float: right;
-    width: 70%;
-    margin: 20px 0 0 0;
+    float: left;
+    width: 700px;
+    margin: 20px 0 0 150px;
 }
 
 .exer-table {
@@ -126,3 +126,14 @@ body {
     width: 50%;
 }
 
+* ul {
+    list-style-type: none;
+}
+
+* ul li {
+    display: inline;
+}
+
+.bw-form {
+    margin: 90px 0 0 0;
+}

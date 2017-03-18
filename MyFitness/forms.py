@@ -37,7 +37,7 @@ class FitnessLogForm(ModelForm):
     ename = forms.CharField(label='Name', max_length=200)
     date = forms.DateField(label='Date', initial=datetime.datetime.today().strftime("%m/%d/%Y"),
                            widget=forms.TextInput(attrs={'id': 'datepicker'}))
-    activity = forms.ChoiceField(label='Exercise', choices=activity_types)
+    activity = forms.ChoiceField(label='Exercise', choices=activity_types, widget=forms.RadioSelect())
     reps = forms.IntegerField(label='Repetitions/Time')
     r_units = forms.ChoiceField(label='Units', choices=r_unit_types, widget=forms.RadioSelect())
     sets = forms.IntegerField(label='Sets')
@@ -72,7 +72,8 @@ class BodyWeightLogForm(ModelForm):
     date = forms.DateField(label='Date', initial=datetime.datetime.today().strftime("%m/%d/%Y"),
                                          widget=forms.TextInput(attrs={'id': 'datepicker'}))
     # time of day
-    tod = forms.ChoiceField(label='Time of Day', choices=time_of_day, widget=forms.RadioSelect())
+    tod = forms.ChoiceField(label='Time of Day', choices=time_of_day,
+                                                 widget=forms.RadioSelect())
 
     class Meta:
         model = BodyWeightLog
