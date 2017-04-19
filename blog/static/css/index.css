@@ -137,3 +137,40 @@ body {
 .bw-form {
     margin: 90px 0 0 0;
 }
+
+.message {
+    border: 0;
+    font-weight: bold;
+    text-decoration: none;
+    color: white;
+    padding: 0.15em 0.5em 0.2em 0.5em;
+    vertical-align: middle;
+
+
+    -o-transition: background-color 0.3s ease;
+    -moz-transition: background-color 0.3s ease;
+    -khtml-transition: background-color 0.3s ease;
+    -webkit-transition: background-color 0.3s ease;
+    -ms-transition: background-color 0.3s ease;
+    transition: background-color 0.3s ease;
+}
+
+.message-delete {
+    background-color: #e20000;
+}
+.message-delete:hover {
+    background-color: #8c0000;
+}
+.message-cancel {
+    background-color: #a6a6a6;
+}
+.message-cancel:hover {
+    background-color: black;
+}
+.delete-page {
+    text-align: center;
+}
+.add-fitness {
+    text-decoration: none;
+    background-color: red;
+}

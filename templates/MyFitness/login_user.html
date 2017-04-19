@@ -3,7 +3,7 @@
     <head>
         {% include "MyFitness/header.html" %}
     </head>
-    <body>
+    <body style="text-align:center;">
         <div class="navbar">
             <ul>
                 <li><a href="{% url 'MyFitness:index' %}">MyFitness / Login</a></li>
@@ -15,7 +15,8 @@
                 <li><p>{{ form.username }}</p></li>
                 <li><p>{{ form.password }}</p></li>
             </ul>
-            <input type="submit" value="Login" />
+            <input class="message message-cancel" type="submit" value="Login" />
+            <a class="message message-cancel" href="{% url 'MyFitness:add_user' %}">Create Account</a>
         </form>
     </body>
 

@@ -4,19 +4,19 @@
         {% include "MyFitness/header.html" %}
         <title>Home - MyFitness</title>
     </head>
-    <body>
+    <body style="text-align: center;">
         {% include "MyFitness/navbar.html" %}
         <form method="post" action="">
             {% csrf_token %}
             <ul class="form">
-                <li id="ename" class="username"><p>Exercise Name: {{ form.ename }}</p></li>
-                <li id="date" class="email"><p>Date: {{ form.date }}</p></li>
+                <li id="ename" class="username"><p>Exercise Name (<i>i.e. Squats</i>) </p><p>{{ form.ename }}</p></li>
+                <li id="date" class="email"><p>Date </p><p>{{ form.date }}</p></li>
                 <li id="activity" class="password"><p>{{ form.activity }}</p></li>
-                <li id="reps" class="username"><p>Repetitions: {{ form.reps }} {{ form.r_units }}</p></li>
-                <li id="sets" class="password"><p>Sets: {{ form.sets }}</p></li>
-                <li id="weight" class="username"><p>Weight: {{ form.weight }} {{ form.w_units }}</p></li>
+                <li id="reps" class="username"><p>Repetitions (<i>i.e. 5</i>) </p><p>{{ form.reps }} {{ form.r_units }}</p></li>
+                <li id="sets" class="password"><p>Sets (<i>i.e. 5</i>) </p><p>{{ form.sets }}</p></li>
+                <li id="weight" class="username"><p>Weight (<i>i.e. 185</i>) </p><p>{{ form.weight }} {{ form.w_units }}</p></li>
             </ul>
-            <input type="submit" value="Create exercise" />
+            <input class="message message-cancel" type="submit" value="Create exercise" />
         </form>
     </body>
 </html>

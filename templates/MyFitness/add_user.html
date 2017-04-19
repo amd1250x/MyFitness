@@ -4,7 +4,7 @@
         {% include "MyFitness/header.html" %}
         <title>New User - MyFitness</title>
     </head>
-    <body>
+    <body style="text-align: center;">
         <div class="navbar">
             <ul>
                 <li><a href="{% url 'MyFitness:index' %}">MyFitness / New</a></li>
@@ -18,7 +18,7 @@
                 <li id="email" class="email"><p>Email: {{ form.email }}</p></li>
                 <li id="password" class="password"><p>Password: {{ form.password }}</p></li>
             </ul>
-            <input type="submit" value="Create User Account" />
+            <input class="message message-cancel" type="submit" value="Create User Account" />
         </form>
     </body>
 </html>

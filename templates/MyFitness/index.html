@@ -19,7 +19,8 @@
 
 {% if d.is_today == True %}
             <div>
-                <a href="{% url 'MyFitness:add_fitness_log' %}">
+                <br/>
+                <a class="message message-cancel" href="{% url 'MyFitness:add_fitness_log' %}">
                     <span>Create Entry</span>
                 </a>
             </div>
@@ -56,8 +57,9 @@
             </table>
 {% if d.is_today == True %}
             <div>
-                <a href="{% url 'MyFitness:add_fitness_log' %}">
-                    <span class="create-entry">Create Entry</span>
+                <br/>
+                <a class="message message-cancel" href="{% url 'MyFitness:add_fitness_log' %}">
+                    <span>Create Entry</span>
                 </a>
             </div>
 {% endif %}
@@ -89,7 +91,7 @@
                     <p>Weight: {{ form.weight }} {{ form.w_units }}</p>
                     <p>Date: {{ form.date }}</p>
                     <p>{{ form.tod }}</p>
-                    <input type="submit"  name="action" value="Submit Weight"/>
+                    <input class="message message-cancel" type="submit"  name="action" value="Submit Weight"/>
                 </form>
             </div>
         {% endif %}

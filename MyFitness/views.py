@@ -161,7 +161,7 @@ def del_fitness_log(request, eid):
             return HttpResponseRedirect(next)
     else:
         form = DelLogForm()
-    return render(request, 'MyFitness/del_fitness_log.html', {'form': form})
+    return render(request, 'MyFitness/del_log.html', {'form': form})
 
 def view_all_entries(request):
     entries = FitnessLog.objects.all()
@@ -181,4 +181,4 @@ def del_weight_log(request, id):
             return HttpResponseRedirect(next)
     else:
         form = DelBodyWeightLogForm()
-    return render(request, 'MyFitness/del_weight_log.html', {'form': form})
+    return render(request, 'MyFitness/del_log.html', {'form': form})
