@@ -167,10 +167,10 @@ def view_all_entries(request):
     entries = FitnessLog.objects.all()
     n_entries = []
     for e in entries:
-        if e.user == request.user:
+        if e.user == request.user.username:
             n_entries.append(e)
     return render(request, 'MyFitness/view_all_entries.html',
-                              {'entries': entries},)
+                              {'entries': n_entries})
 
 def del_weight_log(request, id):
     if request.method == 'POST':
