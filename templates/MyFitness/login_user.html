@@ -9,6 +9,13 @@
                 <li><a href="{% url 'MyFitness:index' %}">MyFitness / Login</a></li>
             </ul>
         </div>
+        <div class="error bar">
+            {% if form.errors %}
+                {% for e in form.errors %}
+                    <p>{{ error }}</p>
+                {% endfor %}
+            {% endif %}
+        </div>
         <form method="post" action="">
             {% csrf_token %}
             <ul class="form">

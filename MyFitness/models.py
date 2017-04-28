@@ -13,10 +13,8 @@ r_contract = ['sec.', 'min.', 'reps']
 time_of_day = ((1, 'Morning'), (2, 'Afternoon'))
 
 
-
 class FitnessLog(models.Model):
     id = models.AutoField('ID', primary_key=True)
-    user = models.CharField('Username', max_length=100)
     ename = models.CharField('Name', max_length=100)
     date = models.DateField('Date')
     activity = models.IntegerField('Exercise', choices=activity_types)
@@ -25,6 +23,7 @@ class FitnessLog(models.Model):
     sets = models.IntegerField('Sets')
     weight = models.IntegerField('Weight', default=0)
     w_units = models.IntegerField('Units', choices=w_unit_types)
+    owner = models.ForeignKey('auth.User', related_name='fitness_logs', on_delete=models.CASCADE)
 
     def __str__(self):
         return self.ename
@@ -35,14 +34,15 @@ class FitnessLog(models.Model):
     def get_reps_unit(self):
         return r_contract[self.r_units-1]
 
+
 class BodyWeightLog(models.Model):
     id = models.AutoField('ID', primary_key=True)
-    user = models.CharField('Username', max_length=100)
     weight = models.FloatField('Weight', default=150)
     w_units = models.IntegerField('Units', choices=w_unit_types)
     date = models.DateField('Date')
     # time of day
     tod = models.IntegerField('Time of Day', choices=time_of_day)
+    owner = models.ForeignKey('auth.User', related_name='bodyweight_logs', on_delete=models.CASCADE)
 
     def __str__(self):
         return self.user + '-' + str(self.date) + '-' + str(time_of_day[self.tod-1][1])

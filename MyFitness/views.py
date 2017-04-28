@@ -12,6 +12,17 @@ from models import FitnessLog, BodyWeightLog
 import datetime
 import uuid
 
+# REST API stuff
+from django.http import Http404
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from rest_framework import status
+from models import FitnessLog
+from serializers import FitnessLogSerializer, UserSerializer, BodyweightLogSerializer
+from rest_framework import generics
+from rest_framework import permissions
+from permissions import IsOwnerOrReadOnly
+
 
 # Create your views here.
 from django.http import HttpResponse
@@ -26,7 +37,7 @@ def index(request):
 
     sorted_fit = []
     for f in fitness_logs:
-        if f.user == request.user.username:
+        if f.owner == request.user:
             sorted_fit.append(f)
     sorted_fit.sort(key=lambda x: x.ename, reverse=False)
 
@@ -61,7 +72,7 @@ def index(request):
 
     for item in fitness_logs:
         for i in range(len(days_pm2)):
-            if item.date.day == days_pm2[i].date.day and item.user == request.user.username:
+            if item.date.day == days_pm2[i].date.day and item.owner == request.user:
                 days_pm2[i].has_items = True
 
     today_morning_weight = "--"
@@ -87,20 +98,18 @@ def index(request):
     else:
         form = BodyWeightLogForm()
 
-    return render(request, 'MyFitness/index.html',
-                              {'user': request.user,
-                               'fitness_logs': sorted_fit,
-                               'days_pm2': days_pm2,
-                               'days_bt': days_bt,
-                               'days_at': days_at,
-                               'days_t': days_t ,
-                               'token': token,
-                               'form': form,
-                               'today': today,
-                               'weight_logs': weight_logs,
-                               'tmw': today_morning_weight,
-                               'taw': today_afternoon_weight,},
-                              )
+    return render(request, 'MyFitness/index.html', {'user': request.user,
+                                                    'fitness_logs': sorted_fit,
+                                                    'days_pm2': days_pm2,
+                                                    'days_bt': days_bt,
+                                                    'days_at': days_at,
+                                                    'days_t': days_t ,
+                                                    'token': token,
+                                                    'form': form,
+                                                    'today': today,
+                                                    'weight_logs': weight_logs,
+                                                    'tmw': today_morning_weight,
+                                                    'taw': today_afternoon_weight, },)
 
 
 def add_user(request):
@@ -129,7 +138,7 @@ def login_user(request):
         else:
             return HttpResponse('invalid login')
     else:
-        form = LoginForm
+        form = LoginForm()
     return render(request, 'MyFitness/login_user.html', {'form': form})
 
 
@@ -143,7 +152,7 @@ def add_fitness_log(request):
         form = FitnessLogForm(request.POST)
         if form.is_valid():
             form_data = form.cleaned_data
-            form_data['user'] = request.user.username
+            form_data['owner'] = request.user
             new_exer = FitnessLog.objects.create(**form_data)
             new_exer.save()
             return HttpResponseRedirect('/')
@@ -163,14 +172,16 @@ def del_fitness_log(request, eid):
         form = DelLogForm()
     return render(request, 'MyFitness/del_log.html', {'form': form})
 
+
 def view_all_entries(request):
     entries = FitnessLog.objects.all()
     n_entries = []
     for e in entries:
-        if e.user == request.user.username:
+        if e.owner == request.user:
             n_entries.append(e)
     return render(request, 'MyFitness/view_all_entries.html',
                               {'entries': n_entries})
+
 
 def del_weight_log(request, id):
     if request.method == 'POST':
@@ -182,3 +193,52 @@ def del_weight_log(request, id):
     else:
         form = DelBodyWeightLogForm()
     return render(request, 'MyFitness/del_log.html', {'form': form})
+
+# More REST API stuff
+
+
+class fitness_log_list(generics.ListCreateAPIView):
+    queryset = FitnessLog.objects.all()
+    serializer_class = FitnessLogSerializer
+
+    permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
+
+    def perform_create(self, serializer):
+        serializer.save(owner=self.request.user)
+
+
+class fitness_log_detail(generics.RetrieveUpdateDestroyAPIView):
+    queryset = FitnessLog.objects.all()
+    serializer_class = FitnessLogSerializer
+
+    permission_classes = (permissions.IsAuthenticatedOrReadOnly,
+                          IsOwnerOrReadOnly,)
+
+
+class bodyweight_log_list(generics.ListCreateAPIView):
+    queryset = BodyWeightLog.objects.all()
+    serializer_class = BodyweightLogSerializer
+
+    permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
+
+    def perform_create(self, serializer):
+        serializer.save(owner=self.request.user)
+
+
+
+class bodyweight_log_detail(generics.RetrieveUpdateDestroyAPIView):
+    queryset = BodyWeightLog.objects.all()
+    serializer_class = BodyweightLogSerializer
+
+    permission_classes = (permissions.IsAuthenticatedOrReadOnly,
+                          IsOwnerOrReadOnly,)
+
+
+class UserList(generics.ListAPIView):
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
+
+
+class UserDetail(generics.RetrieveAPIView):
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
