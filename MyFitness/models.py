@@ -16,6 +16,7 @@ time_of_day = ((1, 'Morning'), (2, 'Afternoon'))
 class FitnessLog(models.Model):
     id = models.AutoField('ID', primary_key=True)
     ename = models.CharField('Name', max_length=100)
+    ename_str = models.CharField('Str Name', max_length=100)
     date = models.DateField('Date')
     activity = models.IntegerField('Exercise', choices=activity_types)
     reps = models.IntegerField('Repetitions/Time')

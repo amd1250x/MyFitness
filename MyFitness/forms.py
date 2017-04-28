@@ -34,19 +34,30 @@ class FitnessLogForm(ModelForm):
     r_unit_types = ((1, 'Seconds'), (2, 'Minutes'), (3, 'Repetitions'))
     today = datetime.datetime.today()
 
-    ename = forms.CharField(label='Name', max_length=200)
+    def __init__(self, *args, **kwargs):
+        # Get the user field from our args
+        user = kwargs.pop('user')
+        # sorted(set(...)) removes duplicates in the list
+        exercises = sorted(set(((str(e), str(e)) for e in FitnessLog.objects.all().filter(owner=user))))
+        super(FitnessLogForm, self).__init__(*args, **kwargs)
+        self.fields['ename'] = forms.ChoiceField(choices=exercises)
+        self.fields['ename'].required = False
+
+    ename_str = forms.CharField(label='Name', max_length=100, required=False,
+                                widget=forms.TextInput(attrs={'placeholder': 'New Exercise'}))
     date = forms.DateField(label='Date', initial=datetime.datetime.today().strftime("%m/%d/%Y"),
                            widget=forms.TextInput(attrs={'id': 'datepicker'}))
     activity = forms.ChoiceField(label='Exercise', choices=activity_types, widget=forms.RadioSelect())
     reps = forms.IntegerField(label='Repetitions/Time')
     r_units = forms.ChoiceField(label='Units', choices=r_unit_types, widget=forms.RadioSelect())
     sets = forms.IntegerField(label='Sets')
-    weight = forms.IntegerField(label='Weight')
+    weight = forms.IntegerField(label='Weight', required=False)
     w_units = forms.ChoiceField(label='Units', choices=w_unit_types, widget=forms.RadioSelect())
 
     class Meta:
         model = FitnessLog
         fields = ('ename',
+                  'ename_str',
                   'date',
                   'activity',
                   'reps',
@@ -61,6 +72,7 @@ class DelLogForm(ModelForm):
     class Meta:
         model = FitnessLog
         fields = ()
+
 
 class BodyWeightLogForm(ModelForm):
 
@@ -81,6 +93,7 @@ class BodyWeightLogForm(ModelForm):
                   'w_units',
                   'date',
                   'tod')
+
 
 class DelBodyWeightLogForm(ModelForm):
 

@@ -149,15 +149,21 @@ def logout_user(request):
 
 def add_fitness_log(request):
     if request.method == 'POST':
-        form = FitnessLogForm(request.POST)
+        form = FitnessLogForm(request.POST, user=request.user)
         if form.is_valid():
             form_data = form.cleaned_data
             form_data['owner'] = request.user
+            if form_data['ename_str'] != "":
+                form_data['ename'] = form_data['ename_str']
+                form_data['ename_str'] = ""
             new_exer = FitnessLog.objects.create(**form_data)
             new_exer.save()
             return HttpResponseRedirect('/')
     else:
-        form = FitnessLogForm()
+        form = FitnessLogForm(user=request.user, initial={'w_units': '1',
+                                                          'weight': '0',
+                                                          'r_units': '3',
+                                                          'activity': '1'})
     return render(request, 'MyFitness/add_fitness_log.html', {'form': form})
 
 
