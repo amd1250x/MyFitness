@@ -14,3 +14,7 @@ My attempt to consistently go to the gym.
 - Workout (set of Exercises) creator
 - Pretty CSS stuff
 - Email verification
+
+## ISSUES
+
+ - RESTapi does NOT work on heroku.
