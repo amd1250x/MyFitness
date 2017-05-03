@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        {% include "MyFitness/header.html" %}
+        <title>Home - MyFitness</title>
+    </head>
+    <body style="text-align: center;">
+        {% include "MyFitness/navbar.html" %}
+        <form method="post" action="">
+            {% csrf_token %}
+            <ul class="form">
+                <li id="ename" class="username"><p>Exercise Name (<i>i.e. Squats</i>) </p><p>{{ form.ename }}</p></li>
+                <li id="workout" class="username"><p>Workout </p><p>{{ form.workout }}</p></li>
+                <li id="activity" class="password"><p>{{ form.activity }}</p></li>
+                <li id="reps" class="username"><p>Repetitions (<i>i.e. 5</i>) </p><p>{{ form.reps }} {{ form.r_units }}</p></li>
+                <li id="sets" class="password"><p>Sets (<i>i.e. 5</i>) </p><p>{{ form.sets }}</p></li>
+            </ul>
+            <input class="message message-cancel" type="submit" value="Create workout exercise" />
+        </form>
+    </body>
+</html>
+
+

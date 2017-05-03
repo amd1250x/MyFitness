@@ -46,7 +46,43 @@ class BodyWeightLog(models.Model):
     owner = models.ForeignKey('auth.User', related_name='bodyweight_logs', on_delete=models.CASCADE)
 
     def __str__(self):
-        return self.user + '-' + str(self.date) + '-' + str(time_of_day[self.tod-1][1])
+        return self.owner + '-' + str(self.date) + '-' + str(time_of_day[self.tod-1][1])
 
     def get_weight_unit(self):
         return w_contract[self.w_units-1]
+
+
+class Workout(models.Model):
+    id = models.AutoField('ID', primary_key=True)
+    name = models.CharField('Name', max_length=100)
+    desc = models.CharField('Description', max_length=100)
+    owner = models.ForeignKey('auth.User', related_name='workouts', on_delete=models.CASCADE)
+
+    def __str__(self):
+        return self.name
+
+
+class WorkoutExercise(models.Model):
+    id = models.AutoField('ID', primary_key=True)
+    ename = models.CharField('Str Name', max_length=100)
+    workout = models.CharField('Workout', max_length=100)
+    activity = models.IntegerField('Exercise', choices=activity_types)
+    reps = models.IntegerField('Repetitions/Time')
+    r_units = models.IntegerField('Units', choices=r_unit_types)
+    sets = models.IntegerField('Sets')
+    owner = models.ForeignKey('auth.User', related_name='workout_exercises', on_delete=models.CASCADE)
+
+    def __str__(self):
+        return self.workout
+
+
+class WorkoutLog(models.Model):
+    id = models.AutoField('ID', primary_key=True)
+    date = models.DateField('Date')
+    workout = models.CharField('Workout', max_length=100)
+    weights = models.CharField('Weights', max_length=200)
+    w_units = models.IntegerField('Units', choices=w_unit_types)
+    owner = models.ForeignKey('auth.User', related_name='workout_exercise_logs', on_delete=models.CASCADE)
+
+    def __str__(self):
+        return self.workout

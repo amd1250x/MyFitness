@@ -2,13 +2,14 @@ from django.shortcuts import render
 from django.shortcuts import render_to_response, get_object_or_404
 from django.views.decorators.csrf import csrf_protect
 from django.views.generic import DeleteView
-from forms import UserForm, LoginForm, FitnessLogForm, DelLogForm, BodyWeightLogForm, DelBodyWeightLogForm
+from forms import UserForm, LoginForm, FitnessLogForm, DelLogForm, BodyWeightLogForm, DelBodyWeightLogForm, \
+                WorkoutExerciseForm, WorkoutLogForm, WorkoutForm
 from django.contrib import messages
 from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.models import User
 from django.http import HttpResponseRedirect
 from django.template import RequestContext
-from models import FitnessLog, BodyWeightLog
+from models import FitnessLog, BodyWeightLog, WorkoutLog, WorkoutExercise, Workout
 import datetime
 import uuid
 
@@ -17,7 +18,6 @@ from django.http import Http404
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
-from models import FitnessLog
 from serializers import FitnessLogSerializer, UserSerializer, BodyweightLogSerializer
 from rest_framework import generics
 from rest_framework import permissions
@@ -167,6 +167,65 @@ def add_fitness_log(request):
     return render(request, 'MyFitness/add_fitness_log.html', {'form': form})
 
 
+def add_workout(request):
+    if request.method == 'POST':
+        form = WorkoutForm(request.POST)
+        if form.is_valid():
+            form_data = form.cleaned_data
+            form_data['owner'] = request.user
+            new_exer = Workout.objects.create(**form_data)
+            new_exer.save()
+            return HttpResponseRedirect('/')
+    else:
+        form = WorkoutForm()
+    return render(request, 'MyFitness/add_workout.html', {'form': form})
+
+
+def add_workout_exercise(request):
+    if request.method == 'POST':
+        form = WorkoutExerciseForm(request.POST, user=request.user)
+        if form.is_valid():
+            form_data = form.cleaned_data
+            form_data['owner'] = request.user
+            new_exer = WorkoutExercise.objects.create(**form_data)
+            new_exer.save()
+            return HttpResponseRedirect('/')
+    else:
+        form = WorkoutExerciseForm(user=request.user)
+    return render(request, 'MyFitness/add_workout_exercise.html', {'form': form})
+
+
+def add_workout_log(request):
+    if request.method == 'POST':
+        form = WorkoutLogForm(request.POST, user=request.user)
+        if form.is_valid():
+            form_data = form.cleaned_data
+            # create a fitness log for each exercise in the workout
+            workout = WorkoutExercise.objects.all().filter(owner=request.user,
+                                                           workout=form_data['workout'])
+            for c, w in enumerate(workout):
+                FitLog = FitnessLog(ename=w.ename,
+                                    ename_str=w.ename,
+                                    date=form_data['date'],
+                                    activity=w.activity,
+                                    reps=w.reps,
+                                    r_units=w.r_units,
+                                    sets=w.sets,
+                                    weight=[x.strip() for x in form_data['weights'].split(',')][c],
+                                    w_units=form_data['w_units'],
+                                    owner=request.user)
+                FitLog.save()
+            form_data['owner'] = request.user
+            new_exer = WorkoutLog.objects.create(**form_data)
+            new_exer.save()
+            return HttpResponseRedirect('/')
+    else:
+        form = WorkoutLogForm(user=request.user)
+        workout = WorkoutExercise.objects.all().filter(owner=request.user)
+    return render(request, 'MyFitness/add_workout_log.html', {'form': form,
+                                                              'workout': workout})
+
+
 def del_fitness_log(request, eid):
     if request.method == 'POST':
         form = DelLogForm(request.POST)
@@ -200,9 +259,10 @@ def del_weight_log(request, id):
         form = DelBodyWeightLogForm()
     return render(request, 'MyFitness/del_log.html', {'form': form})
 
+
+
+
 # More REST API stuff
-
-
 class fitness_log_list(generics.ListCreateAPIView):
     queryset = FitnessLog.objects.all()
     serializer_class = FitnessLogSerializer

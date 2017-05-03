@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        {% include "MyFitness/header.html" %}
+        <title>Home - MyFitness</title>
+    </head>
+    <body style="text-align: center;">
+        {% include "MyFitness/navbar.html" %}
+        <form method="post" action="">
+            {% csrf_token %}
+            <ul class="form">
+                <li id="name" class="username"><p>Name</p><p>{{ form.name }}</p></li>
+                <li id="desc" class="username"><p>Description </p><p>{{ form.desc }}</p></li>
+            </ul>
+            <input class="message message-cancel" type="submit" value="Create workout exercise" />
+        </form>
+    </body>
+</html>
+
+

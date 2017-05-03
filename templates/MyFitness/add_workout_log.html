@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        {% include "MyFitness/header.html" %}
+        <title>Home - MyFitness</title>
+    </head>
+    <body style="text-align: center;">
+        {% include "MyFitness/navbar.html" %}
+        <form method="post" action="">
+            {% csrf_token %}
+            <ul class="form">
+                <li id="date"><p>Date </p><p>{{ form.date }}</p></li>
+                {% for w in workouts %}
+                    <p>{{ w.ename }} - {{ w.workout }}</p>
+                {% endfor %}
+                <li id="workout"><p>Workout </p><p>{{ form.workout }}</p></li>
+                <li id="weights"><p>Weights (<i>i.e. 185</i>) </p><p>{{ form.weights }} {{ form.w_units }}</p></li>
+            </ul>
+            <input class="message message-cancel" type="submit" value="Create workout exercise log" />
+        </form>
+    </body>
+</html>

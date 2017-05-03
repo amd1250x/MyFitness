@@ -1,8 +1,13 @@
 from django.contrib.auth.models import User
 from django.forms import ModelForm
 from django import forms
-from MyFitness.models import FitnessLog, BodyWeightLog
+from MyFitness.models import FitnessLog, BodyWeightLog, WorkoutExercise, WorkoutLog, Workout
 import datetime
+
+activity_types = ((1, 'Weighted Lifting'), (2, 'Body weight Lifting'), (3, 'Cardiovascular'))
+w_unit_types = ((1, 'Pounds'), (2, 'Kilograms'))
+r_unit_types = ((1, 'Seconds'), (2, 'Minutes'), (3, 'Repetitions'))
+today = datetime.datetime.today()
 
 
 class UserForm(ModelForm):
@@ -28,11 +33,6 @@ class LoginForm(ModelForm):
 
 
 class FitnessLogForm(ModelForm):
-
-    activity_types = ((1, 'Weighted Lifting'), (2, 'Body weight Lifting'), (3, 'Cardiovascular'))
-    w_unit_types = ((1, 'Pounds'), (2, 'Kilograms'))
-    r_unit_types = ((1, 'Seconds'), (2, 'Minutes'), (3, 'Repetitions'))
-    today = datetime.datetime.today()
 
     def __init__(self, *args, **kwargs):
         # Get the user field from our args
@@ -100,3 +100,62 @@ class DelBodyWeightLogForm(ModelForm):
     class Meta:
         model = BodyWeightLog
         fields = ()
+
+
+class WorkoutForm(ModelForm):
+    name = forms.CharField(label='Name', max_length=100)
+    desc = forms.CharField(label='Description', max_length=100)
+
+    class Meta:
+        model = Workout
+        fields = ('name',
+                  'desc')
+
+
+class WorkoutExerciseForm(ModelForm):
+    def __init__(self, *args, **kwargs):
+        # Get the user field from our args
+        user = kwargs.pop('user')
+        # sorted(set(...)) removes duplicates in the list
+        workouts = sorted(set(((str(e), str(e)) for e in Workout.objects.all().filter(owner=user))))
+        super(WorkoutExerciseForm, self).__init__(*args, **kwargs)
+        self.fields['workout'] = forms.ChoiceField(choices=workouts)
+        self.fields['workout'].required = False
+
+    ename = forms.CharField(label='Exercise Name', max_length=100)
+    activity = forms.ChoiceField(label='Exercise', choices=activity_types, widget=forms.RadioSelect())
+    reps = forms.IntegerField(label='Repetitions/Time')
+    r_units = forms.ChoiceField(label='Units', choices=r_unit_types, widget=forms.RadioSelect())
+    sets = forms.IntegerField(label='Sets')
+
+    class Meta:
+        model = WorkoutExercise
+        fields = ('ename',
+                  'workout',
+                  'activity',
+                  'reps',
+                  'r_units',
+                  'sets')
+
+
+class WorkoutLogForm(ModelForm):
+    def __init__(self, *args, **kwargs):
+        # Get the user field from our args
+        user = kwargs.pop('user')
+        # sorted(set(...)) removes duplicates in the list
+        workouts = sorted(set(((str(e), str(e)) for e in Workout.objects.all().filter(owner=user))))
+        super(WorkoutLogForm, self).__init__(*args, **kwargs)
+        self.fields['workout'] = forms.ChoiceField(choices=workouts)
+        self.fields['workout'].required = False
+
+    date = forms.DateField(label='Date', initial=datetime.datetime.today().strftime("%m/%d/%Y"),
+                           widget=forms.TextInput(attrs={'id': 'datepicker'}))
+    weights = forms.CharField(label='Weights', max_length=200)
+    w_units = forms.ChoiceField(label='Units', choices=w_unit_types, widget=forms.RadioSelect())
+
+    class Meta:
+        model = WorkoutLog
+        fields = ('date',
+                  'workout',
+                  'weights',
+                  'w_units')
