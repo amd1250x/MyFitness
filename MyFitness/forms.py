@@ -142,15 +142,22 @@ class WorkoutLogForm(ModelForm):
     def __init__(self, *args, **kwargs):
         # Get the user field from our args
         user = kwargs.pop('user')
-        # sorted(set(...)) removes duplicates in the list
-        workouts = sorted(set(((str(e), str(e)) for e in Workout.objects.all().filter(owner=user))))
+        workout_id = kwargs.pop('workout_id')
+        my_workout = Workout.objects.get(id=workout_id)
+        select_workouts = WorkoutExercise.objects.all().filter(workout=my_workout)
         super(WorkoutLogForm, self).__init__(*args, **kwargs)
-        self.fields['workout'] = forms.ChoiceField(choices=workouts)
+        self.fields['workout'] = forms.CharField(max_length=100)
+        self.fields['workout'].widget = forms.TextInput(attrs={'type': 'hidden'})
         self.fields['workout'].required = False
+        self.fields['weights'] = forms.CharField(label='Weights', max_length=200)
+        init_str = ""
+        for w in select_workouts:
+            init_str += w.ename + ", "
+        self.fields['weights'].widget = forms.TextInput(attrs={'placeholder': init_str,
+                                                               'size': len(init_str)})
 
     date = forms.DateField(label='Date', initial=datetime.datetime.today().strftime("%m/%d/%Y"),
                            widget=forms.TextInput(attrs={'id': 'datepicker'}))
-    weights = forms.CharField(label='Weights', max_length=200)
     w_units = forms.ChoiceField(label='Units', choices=w_unit_types, widget=forms.RadioSelect())
 
     class Meta:
@@ -159,3 +166,10 @@ class WorkoutLogForm(ModelForm):
                   'workout',
                   'weights',
                   'w_units')
+
+
+class DelWorkoutLogForm(ModelForm):
+
+    class Meta:
+        model = WorkoutLog
+        fields = ()

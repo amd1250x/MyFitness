@@ -13,7 +13,8 @@ urlpatterns = [
     url(r'^del-fitness/(?P<eid>\d+)/$', views.del_fitness_log, name='del_fitness_log'),
     url(r'^all-fitness', views.view_all_entries, name='view_all_entries'),
     url(r'^del-weight/(?P<id>\d+)/$', views.del_weight_log, name='del_weight_log'),
-    url(r'^add-workout-log', views.add_workout_log, name='add_workout_log'),
+    url(r'^add-wlog/(?P<workout_id>\d+)/$', views.add_workout_log, name='add_workout_log'),
+    url(r'^del-wlog/(?P<workout_id>\d+)/$', views.del_workout_log, name='del_workout_log'),
     url(r'^add-workout', views.add_workout_exercise, name='add_workout_exercise'),
     url(r'^new-workout', views.add_workout, name='add_workout'),
 

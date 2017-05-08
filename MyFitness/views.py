@@ -3,7 +3,7 @@ from django.shortcuts import render_to_response, get_object_or_404
 from django.views.decorators.csrf import csrf_protect
 from django.views.generic import DeleteView
 from forms import UserForm, LoginForm, FitnessLogForm, DelLogForm, BodyWeightLogForm, DelBodyWeightLogForm, \
-                WorkoutExerciseForm, WorkoutLogForm, WorkoutForm
+                WorkoutExerciseForm, WorkoutLogForm, WorkoutForm, DelWorkoutLogForm
 from django.contrib import messages
 from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.models import User
@@ -195,14 +195,13 @@ def add_workout_exercise(request):
     return render(request, 'MyFitness/add_workout_exercise.html', {'form': form})
 
 
-def add_workout_log(request):
+def add_workout_log(request, workout_id):
     if request.method == 'POST':
-        form = WorkoutLogForm(request.POST, user=request.user)
+        form = WorkoutLogForm(request.POST, user=request.user, workout_id=workout_id)
         if form.is_valid():
             form_data = form.cleaned_data
             # create a fitness log for each exercise in the workout
-            workout = WorkoutExercise.objects.all().filter(owner=request.user,
-                                                           workout=form_data['workout'])
+            workout = WorkoutExercise.objects.all().filter(workout=Workout.objects.get(id=workout_id))
             for c, w in enumerate(workout):
                 FitLog = FitnessLog(ename=w.ename,
                                     ename_str=w.ename,
@@ -216,14 +215,25 @@ def add_workout_log(request):
                                     owner=request.user)
                 FitLog.save()
             form_data['owner'] = request.user
+            form_data['workout'] = Workout.objects.get(id=workout_id).name
             new_exer = WorkoutLog.objects.create(**form_data)
             new_exer.save()
             return HttpResponseRedirect('/')
     else:
-        form = WorkoutLogForm(user=request.user)
-        workout = WorkoutExercise.objects.all().filter(owner=request.user)
-    return render(request, 'MyFitness/add_workout_log.html', {'form': form,
-                                                              'workout': workout})
+        form = WorkoutLogForm(user=request.user, workout_id=workout_id)
+    return render(request, 'MyFitness/add_workout_log.html', {'form': form})
+
+
+def del_workout_log(request, workout_id):
+    if request.method == 'POST':
+        form = DelWorkoutLogForm(request.POST)
+        if form.is_valid():
+            entry = get_object_or_404(WorkoutLog, id=workout_id).delete()
+            next = request.POST.get('next', '/')
+            return HttpResponseRedirect(next)
+    else:
+        form = DelWorkoutLogForm()
+    return render(request, 'MyFitness/del_workout_log.html', {'form': form})
 
 
 def del_fitness_log(request, eid):
