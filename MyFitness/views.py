@@ -33,17 +33,19 @@ token = uuid.uuid4()
 def index(request):
     fitness_logs = FitnessLog.objects.all().filter(owner=request.user)
     weight_logs = BodyWeightLog.objects.all().filter(owner=request.user)
+    workout_logs = WorkoutLog.objects.all().filter(owner=request.user)
+    workouts = Workout.objects.all().filter(owner=request.user)
+    workout_exercises = WorkoutExercise.objects.all().filter(owner=request.user)
 
-    workout_exercises = WorkoutExercise.objects.filter(owner=request.user)
-    exercises = []
-    for w in workout_exercises:
-        if w.ename not in exercises:
-            exercises.append(w.ename)
+    ifit_logs = []
+    for e in fitness_logs:
+        if e.ename not in ifit_logs:
+            ifit_logs.append(e.ename)
 
     time_label = []
     for e in fitness_logs:
-        if e.date.strftime("%m/%d/%Y") not in time_label:
-            time_label.append(e.date.strftime("%m/%d/%Y"))
+        if e.date not in time_label:
+            time_label.append(e.date)
     today = datetime.datetime.today()
 
     sorted_fit = []
@@ -121,8 +123,9 @@ def index(request):
                                                     'weight_logs': weight_logs,
                                                     'tmw': today_morning_weight,
                                                     'taw': today_afternoon_weight,
-                                                    'exercises': workout_exercises,
-                                                    'time_label': time_label},)
+                                                    'workout_logs': workout_logs,
+                                                    'workouts': workouts,
+                                                    'workout_exercises': workout_exercises},)
 
 
 def add_user(request):
