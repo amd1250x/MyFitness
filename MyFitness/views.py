@@ -241,12 +241,21 @@ def add_workout_log(request, workout_id):
 
 
 def del_workout_log(request, workout_id):
+    workout_log = WorkoutLog.objects.get(id=workout_id)
+    workout = workout_log.workout
+
     if request.method == 'POST':
         form = DelWorkoutLogForm(request.POST)
         if form.is_valid():
-            entry = get_object_or_404(WorkoutLog, id=workout_id).delete()
-            next = request.POST.get('next', '/')
-            return HttpResponseRedirect(next)
+            entry = get_object_or_404(WorkoutLog, pk=workout_id)
+            exercises = WorkoutExercise.objects.all().filter(workout=workout)
+            for e in FitnessLog.objects.all().filter(owner=request.user):
+                for ex in exercises:
+                    if e.ename == ex.ename:
+                        e.delete()
+            entry.delete()
+            inext = request.POST.get('next', '/')
+            return HttpResponseRedirect(inext)
     else:
         form = DelWorkoutLogForm()
     return render(request, 'MyFitness/del_workout_log.html', {'form': form})
@@ -257,8 +266,8 @@ def del_fitness_log(request, eid):
         form = DelLogForm(request.POST)
         if form.is_valid():
             entry = get_object_or_404(FitnessLog, pk=eid).delete()
-            next = request.POST.get('next', '/')
-            return HttpResponseRedirect(next)
+            inext = request.POST.get('next', '/')
+            return HttpResponseRedirect(inext)
     else:
         form = DelLogForm()
     return render(request, 'MyFitness/del_log.html', {'form': form})
@@ -279,8 +288,8 @@ def del_weight_log(request, id):
         form = DelBodyWeightLogForm(request.POST)
         if form.is_valid():
             entry = get_object_or_404(BodyWeightLog, pk=id).delete()
-            next = request.POST.get('next', '/')
-            return HttpResponseRedirect(next)
+            inext = request.POST.get('next', '/')
+            return HttpResponseRedirect(inext)
     else:
         form = DelBodyWeightLogForm()
     return render(request, 'MyFitness/del_log.html', {'form': form})

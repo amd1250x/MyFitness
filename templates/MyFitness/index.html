@@ -108,7 +108,7 @@
             {% endfor %}
             {% for w in workout_logs %}
                 <p>Your Recent Workout Logs</p>
-                <p>{{ w.date }}</p>
+                <p>{{ w.date }} - {{ w.workout }} - <a href="/del-wlog/{{ w.id }}">Delete Log</a></p>
             {% endfor %}
             <a href="{% url 'MyFitness:add_workout' %}">Create Workout</a>
             <a href="{% url 'MyFitness:add_workout_exercise' %}">Create Exercise for Workout</a>
