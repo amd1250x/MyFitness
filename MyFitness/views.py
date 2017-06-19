@@ -227,7 +227,7 @@ def add_workout_log(request, workout_id):
                                     sets=w.sets,
                                     weight=[x.strip() for x in form_data['weights'].split(',')][c],
                                     w_units=form_data['w_units'],
-                                    fromworkout=True,
+                                    workout=Workout.objects.get(id=workout_id).name,
                                     owner=request.user)
                 FitLog.save()
             form_data['owner'] = request.user
