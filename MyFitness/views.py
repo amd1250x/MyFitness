@@ -167,7 +167,7 @@ def add_fitness_log(request):
         if form.is_valid():
             form_data = form.cleaned_data
             form_data['owner'] = request.user
-            form_data['fromworkout'] = False
+            form_data['workout'] = "None"
             if form_data['ename_str'] != "":
                 form_data['ename'] = form_data['ename_str']
                 form_data['ename_str'] = ""

@@ -6,7 +6,7 @@ from django.contrib.auth.models import User
 class FitnessLogSerializer(serializers.ModelSerializer):
     class Meta:
         model = FitnessLog
-        fields = ('id', 'ename', 'date', 'activity', 'reps', 'r_units', 'sets', 'weight', 'w_units')
+        fields = ('id', 'ename', 'date', 'activity', 'reps', 'r_units', 'sets', 'weight', 'w_units', 'workout')
 
 
 class BodyweightLogSerializer(serializers.ModelSerializer):

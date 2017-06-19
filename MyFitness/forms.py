@@ -64,7 +64,8 @@ class FitnessLogForm(ModelForm):
                   'r_units',
                   'sets',
                   'weight',
-                  'w_units')
+                  'w_units',
+                  )
 
 
 class DelLogForm(ModelForm):
