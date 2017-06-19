@@ -244,7 +244,13 @@ def del_workout_log(request, workout_id):
     if request.method == 'POST':
         form = DelWorkoutLogForm(request.POST)
         if form.is_valid():
-            entry = get_object_or_404(WorkoutLog, id=workout_id).delete()
+            fitness_logs = FitnessLog.objects.all()
+            for f in fitness_logs:
+                if request.user == f.owner:
+                    if f.date == WorkoutLog.objects.get(id=workout_id).date and \
+                                    f.workout == WorkoutLog.objects.get(id=workout_id).workout:
+                        f.delete()
+            entry = get_object_or_404(WorkoutLog, pk=workout_id).delete()
             next = request.POST.get('next', '/')
             return HttpResponseRedirect(next)
     else:
