@@ -1,5 +1,5 @@
 from django.contrib.auth.models import User
-from django.forms import ModelForm
+from django.forms import ModelForm, ModelMultipleChoiceField
 from django import forms
 from MyFitness.models import FitnessLog, BodyWeightLog, WorkoutExercise, WorkoutLog, Workout
 import datetime
@@ -68,6 +68,22 @@ class FitnessLogForm(ModelForm):
                   )
 
 
+class EditLogForm(ModelForm):
+
+    class Meta:
+        model = FitnessLog
+        fields = ('ename',
+                  'ename_str',
+                  'date',
+                  'activity',
+                  'reps',
+                  'r_units',
+                  'sets',
+                  'weight',
+                  'w_units',
+                  )
+
+
 class DelLogForm(ModelForm):
 
     class Meta:
@@ -104,13 +120,28 @@ class DelBodyWeightLogForm(ModelForm):
 
 
 class WorkoutForm(ModelForm):
+    def __init__(self, *args, **kwargs):
+        super(WorkoutForm, self).__init__(*args, **kwargs)
+        self.fields['color'] = forms.CharField(label='Color', max_length=6)
+        self.fields['color'].widget = forms.TextInput(attrs={'class': 'jscolor'})
+
     name = forms.CharField(label='Name', max_length=100)
     desc = forms.CharField(label='Description', max_length=100)
 
     class Meta:
         model = Workout
         fields = ('name',
-                  'desc')
+                  'desc',
+                  'color')
+
+
+class EditWorkoutForm(ModelForm):
+
+    class Meta:
+        model = Workout
+        fields = ('name',
+                  'desc',
+                  'color')
 
 
 class WorkoutExerciseForm(ModelForm):
@@ -139,7 +170,20 @@ class WorkoutExerciseForm(ModelForm):
                   'sets')
 
 
+class EditWorkoutExerciseForm(ModelForm):
+
+    class Meta:
+        model = WorkoutExercise
+        fields = ('ename',
+                  'workout',
+                  'activity',
+                  'reps',
+                  'r_units',
+                  'sets')
+
+
 class WorkoutLogForm(ModelForm):
+
     def __init__(self, *args, **kwargs):
         # Get the user field from our args
         user = kwargs.pop('user')
@@ -169,7 +213,24 @@ class WorkoutLogForm(ModelForm):
                   'w_units')
 
 
+class EditWorkoutLogForm(ModelForm):
+
+    class Meta:
+        model = WorkoutLog
+        fields = ('date',
+                  'workout',
+                  'weights',
+                  'w_units')
+
+
 class DelWorkoutLogForm(ModelForm):
+
+    class Meta:
+        model = WorkoutLog
+        fields = ()
+
+
+class DelWorkoutExerciseForm(ModelForm):
 
     class Meta:
         model = WorkoutLog

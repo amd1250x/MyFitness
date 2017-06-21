@@ -3,7 +3,8 @@ from django.shortcuts import render_to_response, get_object_or_404
 from django.views.decorators.csrf import csrf_protect
 from django.views.generic import DeleteView
 from forms import UserForm, LoginForm, FitnessLogForm, DelLogForm, BodyWeightLogForm, DelBodyWeightLogForm, \
-                WorkoutExerciseForm, WorkoutLogForm, WorkoutForm, DelWorkoutLogForm
+                WorkoutExerciseForm, WorkoutLogForm, WorkoutForm, DelWorkoutLogForm, DelWorkoutExerciseForm, \
+                EditLogForm, EditWorkoutForm, EditWorkoutExerciseForm, EditWorkoutLogForm
 from django.contrib import messages
 from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.models import User
@@ -123,7 +124,7 @@ def index(request):
                                                     'tmw': today_morning_weight,
                                                     'taw': today_afternoon_weight,
                                                     'exercises': workout_exercises,
-                                                    'time_label': time_label},)
+                                                    'time_label': time_label,},)
 
 
 def add_user(request):
@@ -182,18 +183,52 @@ def add_fitness_log(request):
     return render(request, 'MyFitness/add_fitness_log.html', {'form': form})
 
 
+def edit_fitness_log(request, eid):
+    item = FitnessLog.objects.get(pk=eid)
+    if request.method == 'POST':
+        form = EditLogForm(request.POST, instance=item)
+        if form.is_valid():
+            form_data = form.cleaned_data
+            form_data['owner'] = request.user
+            form_data['workout'] = "None"
+            if form_data['ename_str'] != "":
+                form_data['ename'] = form_data['ename_str']
+                form_data['ename_str'] = ""
+            form.save()
+            return HttpResponseRedirect('/')
+    else:
+        form = FitnessLogForm(user=request.user, instance=item)
+    return render(request, 'MyFitness/edit_fitness_log.html', {'form': form})
+
+
 def add_workout(request):
     if request.method == 'POST':
         form = WorkoutForm(request.POST)
         if form.is_valid():
             form_data = form.cleaned_data
             form_data['owner'] = request.user
+            form_data['count'] = 0
             new_exer = Workout.objects.create(**form_data)
             new_exer.save()
             return HttpResponseRedirect('/')
     else:
         form = WorkoutForm()
     return render(request, 'MyFitness/add_workout.html', {'form': form})
+
+
+def edit_workout(request, wid):
+    item = Workout.objects.get(pk=wid)
+    if request.method == 'POST':
+        form = EditWorkoutForm(request.POST, instance=item)
+        if form.is_valid():
+            form_data = form.cleaned_data
+            form_data['owner'] = request.user
+            form_data['count'] = 0
+            form.save()
+            return HttpResponseRedirect('/')
+    else:
+        form = WorkoutForm(instance=item)
+    return render(request, 'MyFitness/edit_workout.html', {'form': form})
 
 
 def add_workout_exercise(request):
@@ -204,10 +239,27 @@ def add_workout_exercise(request):
             form_data['owner'] = request.user
             new_exer = WorkoutExercise.objects.create(**form_data)
             new_exer.save()
+            w = Workout.objects.all().filter(owner=request.user).get(name=form_data['workout'])
+            w.count += 1
+            w.save()
             return HttpResponseRedirect('/')
     else:
         form = WorkoutExerciseForm(user=request.user)
     return render(request, 'MyFitness/add_workout_exercise.html', {'form': form})
+
+
+def edit_workout_exercise(request, wid):
+    item = WorkoutExercise.objects.get(pk=wid)
+    if request.method == 'POST':
+        form = EditWorkoutExerciseForm(request.POST, instance=item)
+        if form.is_valid():
+            form_data = form.cleaned_data
+            form_data['owner'] = request.user
+            form.save()
+            return HttpResponseRedirect('/')
+    else:
+        form = WorkoutExerciseForm(user=request.user, instance=item)
+    return render(request, 'MyFitness/edit_workout_exercise.html', {'form': form})
 
 
 def add_workout_log(request, workout_id):
@@ -227,7 +279,7 @@ def add_workout_log(request, workout_id):
                                     sets=w.sets,
                                     weight=[x.strip() for x in form_data['weights'].split(',')][c],
                                     w_units=form_data['w_units'],
-                                    workout=Workout.objects.get(id=workout_id).name,
+                                    workout=Workout.objects.get(id=workout_id),
                                     owner=request.user)
                 FitLog.save()
             form_data['owner'] = request.user
@@ -240,6 +292,52 @@ def add_workout_log(request, workout_id):
     return render(request, 'MyFitness/add_workout_log.html', {'form': form})
 
 
+def edit_workout_log(request, workout_id, wid):
+    item = WorkoutLog.objects.get(pk=wid)
+    if request.method == 'POST':
+        form = EditWorkoutLogForm(request.POST, instance=item)
+        if form.is_valid():
+            form_data = form.cleaned_data
+            # Get each fitness log that corresponds to the workout_log
+            fitlogs = FitnessLog.objects.filter(workout=Workout.objects.get(id=workout_id), date=item.date)
+            for c, w in enumerate(fitlogs):
+                w.delete()
+                w = FitnessLog(ename=w.ename,
+                               ename_str=w.ename,
+                               date=form_data['date'],
+                               activity=w.activity,
+                               reps=w.reps,
+                               r_units=w.r_units,
+                               sets=w.sets,
+                               weight=[x.strip() for x in form_data['weights'].split(',')][c],
+                               w_units=form_data['w_units'],
+                               workout=Workout.objects.get(id=workout_id),
+                               owner=request.user)
+                w.save()
+            form_data['owner'] = request.user
+            form_data['workout'] = Workout.objects.get(id=workout_id).name
+            form.save()
+            return HttpResponseRedirect('/')
+    else:
+        form = WorkoutLogForm(user=request.user, workout_id=workout_id, instance=item)
+    return render(request, 'MyFitness/edit_workout_log.html', {'form': form})
+
+
+def del_workout_exercise(request, wid):
+    if request.method == 'POST':
+        form = DelWorkoutExerciseForm(request.POST)
+        if form.is_valid():
+            w = get_object_or_404(WorkoutExercise, pk=wid).workout
+            wo = Workout.objects.get(name=w)
+            wo.count -= 1
+            wo.save()
+            entry = get_object_or_404(WorkoutExercise, pk=wid).delete()
+            return HttpResponseRedirect("/")
+    else:
+        form = DelWorkoutExerciseForm()
+    return render(request, 'MyFitness/del_workout_exercise.html', {'form': form})
+
+
 def del_workout_log(request, workout_id):
     if request.method == 'POST':
         form = DelWorkoutLogForm(request.POST)
@@ -248,7 +346,7 @@ def del_workout_log(request, workout_id):
             for f in fitness_logs:
                 if request.user == f.owner:
                     if f.date == WorkoutLog.objects.get(id=workout_id).date and \
-                                    f.workout == WorkoutLog.objects.get(id=workout_id).workout:
+                                    f.workout.name == WorkoutLog.objects.get(id=workout_id).workout:
                         f.delete()
             entry = get_object_or_404(WorkoutLog, pk=workout_id).delete()
             next = request.POST.get('next', '/')
