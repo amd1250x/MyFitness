@@ -70,6 +70,9 @@ class FitnessLogForm(ModelForm):
 
 class EditLogForm(ModelForm):
 
+    ename_str = forms.CharField(label='Name', max_length=100, required=False,
+                                widget=forms.TextInput(attrs={'placeholder': 'New Exercise'}))
+    
     class Meta:
         model = FitnessLog
         fields = ('ename',
