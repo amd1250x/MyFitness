@@ -299,7 +299,10 @@ def edit_workout_log(request, workout_id, wid):
         if form.is_valid():
             form_data = form.cleaned_data
             # Get each fitness log that corresponds to the workout_log
-            fitlogs = FitnessLog.objects.filter(workout=Workout.objects.get(id=workout_id), date=item.date)
+            fitlogs = FitnessLog.objects.filter(workout_id=Workout.objects.get(id=workout_id).id,
+                                                date=item.date,
+                                                owner=item.owner)
+            print(fitlogs)
             for c, w in enumerate(fitlogs):
                 w.delete()
                 w = FitnessLog(ename=w.ename,
