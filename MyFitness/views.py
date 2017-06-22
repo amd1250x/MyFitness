@@ -168,11 +168,10 @@ def add_fitness_log(request):
         if form.is_valid():
             form_data = form.cleaned_data
             form_data['owner'] = request.user
-            form_data['workout_id'] = 0
-            form_data['wlog_id'] = 0
             if form_data['ename_str'] != "":
                 form_data['ename'] = form_data['ename_str']
-                form_data['ename_str'] = ""
+            else:
+                form_data['ename_str'] = form_data['ename']
             new_exer = FitnessLog.objects.create(**form_data)
             new_exer.save()
             return HttpResponseRedirect('/')

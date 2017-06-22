@@ -40,7 +40,7 @@
                 <tbody>
                     <tr>
                         <td>
-                            {% if log.workout_id != 0 %}
+                            {% if log.workout_id != None %}
                                 <span class="workout-tag" style="background-color: #{{ log.workout.color }};">{{ log.workout.name }}</span>
                             {% endif %}
                             {{ log.ename }}
@@ -53,7 +53,7 @@
                             {% endif %}</td>
                         <td>{{ log.reps}} {{ log.get_reps_unit }}</td>
                         <td>{{ log.sets }}</td>
-                        {% if log.workout_id == 0 %}
+                        {% if log.workout_id == None %}
                             <td><a class="delete-button" href="/del-fitness/{{ log.id }}/?next=/">x</a></td>
                         {% endif %}
                         </tr>
