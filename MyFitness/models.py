@@ -37,6 +37,7 @@ class FitnessLog(models.Model):
     weight = models.IntegerField('Weight', default=0)
     w_units = models.IntegerField('Units', choices=w_unit_types)
     workout = models.ForeignKey('Workout', related_name='workout', on_delete=models.CASCADE)
+    wlog = models.ForeignKey('WorkoutLog', related_name='workout_log', on_delete=models.CASCADE)
     owner = models.ForeignKey('auth.User', related_name='fitness_logs', on_delete=models.CASCADE)
 
     def __str__(self):

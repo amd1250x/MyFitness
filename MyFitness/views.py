@@ -169,6 +169,7 @@ def add_fitness_log(request):
             form_data = form.cleaned_data
             form_data['owner'] = request.user
             form_data['workout'] = "None"
+            form_data['wlog'] = None
             if form_data['ename_str'] != "":
                 form_data['ename'] = form_data['ename_str']
                 form_data['ename_str'] = ""
@@ -267,6 +268,10 @@ def add_workout_log(request, workout_id):
         form = WorkoutLogForm(request.POST, user=request.user, workout_id=workout_id)
         if form.is_valid():
             form_data = form.cleaned_data
+            form_data['owner'] = request.user
+            form_data['workout'] = Workout.objects.get(id=workout_id).name
+            new_exer = WorkoutLog.objects.create(**form_data)
+            new_exer.save()
             # create a fitness log for each exercise in the workout
             workout = WorkoutExercise.objects.all().filter(workout=Workout.objects.get(id=workout_id))
             for c, w in enumerate(workout):
@@ -280,12 +285,10 @@ def add_workout_log(request, workout_id):
                                     weight=[x.strip() for x in form_data['weights'].split(',')][c],
                                     w_units=form_data['w_units'],
                                     workout=Workout.objects.get(id=workout_id),
+                                    wlog=new_exer,
                                     owner=request.user)
                 FitLog.save()
-            form_data['owner'] = request.user
-            form_data['workout'] = Workout.objects.get(id=workout_id).name
-            new_exer = WorkoutLog.objects.create(**form_data)
-            new_exer.save()
+
             return HttpResponseRedirect('/')
     else:
         form = WorkoutLogForm(user=request.user, workout_id=workout_id)
@@ -298,10 +301,9 @@ def edit_workout_log(request, workout_id, wid):
         form = EditWorkoutLogForm(request.POST, instance=item)
         if form.is_valid():
             form_data = form.cleaned_data
+            form.save()
             # Get each fitness log that corresponds to the workout_log
-            fitlogs = FitnessLog.objects.filter(workout_id=Workout.objects.get(id=workout_id).id,
-                                                date=item.date,
-                                                owner=item.owner)
+            fitlogs = FitnessLog.objects.filter(wlog=WorkoutLog.objects.get(id=wid))
             print(fitlogs)
             for c, w in enumerate(fitlogs):
                 w.delete()
@@ -314,12 +316,11 @@ def edit_workout_log(request, workout_id, wid):
                                sets=w.sets,
                                weight=[x.strip() for x in form_data['weights'].split(',')][c],
                                w_units=form_data['w_units'],
-                               workout=Workout.objects.get(id=workout_id),
+                               workout=Workout.objects.get(name=form_data['workout']),
+                               wlog=item,
                                owner=request.user)
                 w.save()
-            form_data['owner'] = request.user
-            form_data['workout'] = Workout.objects.get(id=workout_id).name
-            form.save()
+
             return HttpResponseRedirect('/')
     else:
         form = WorkoutLogForm(user=request.user, workout_id=workout_id, instance=item)
